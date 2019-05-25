@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 Flask = "==1.0.3"
 flask-restful = "*"
+prompt-toolkit = "*"
 
 [requires]
 python_version = "3.6"
