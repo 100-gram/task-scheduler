@@ -9,6 +9,7 @@ verify_ssl = true
 Flask = "==1.0.3"
 flask-restful = "*"
 prompt-toolkit = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.6"
