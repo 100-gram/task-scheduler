@@ -1,4 +1,5 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify
+from ConsoleInterface import console_init
 
 app = Flask(__name__)
 
@@ -13,21 +14,6 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-incomes = [
-  {'description': 'salary', 'amount': 5000}
-]
-
-
-@app.route('/incomes')
-def get_incomes():
-    return jsonify(incomes)
-
-
-@app.route('/incomes', methods=['POST'])
-def add_income():
-    incomes.append(request.get_json())
-    return '', 204
-
-
 if __name__ == '__main__':
+    console_init()
     app.run(debug=True)
