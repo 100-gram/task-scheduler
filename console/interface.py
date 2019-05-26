@@ -1,8 +1,18 @@
 from prompt_toolkit import prompt
 import sys
 from controller.datamanager import DataManager
+from enum import Enum
 
-data_manager = DataManager()
+data_manager = DataManager.load_from_file();
+ITEMS_PER_PAGE = 10;
+
+
+class TaskMenuType(Enum):
+    ALL = 0
+    RUNNING = 1
+    FINISHED = 2
+    COMPLETED = 3
+
 
 class ConsoleInterface:
     @staticmethod
@@ -11,7 +21,7 @@ class ConsoleInterface:
         while True:
             if input_is_correct:
                 print("Main menu: ")
-                print("1. All tasks\n2.Current tasks\n3.Finished tasks\n4.New task\n5.Exit")
+                print("1.All tasks\n2.Running tasks\n3.Finished tasks\n4.Completed tasks\n5.New task\n6.Exit")
             else:
                 print("Your input was not correct, try again")
             answer = prompt('Enter your variant: ')
@@ -20,33 +30,58 @@ class ConsoleInterface:
     @staticmethod
     def __main_menu_redirect(value: int) -> bool:
         if value == '1':
-            ConsoleInterface.__all_tasks()
+            ConsoleInterface.__tasks_menu(TaskMenuType.ALL)
         elif value == '2':
-            ConsoleInterface.__current_tasks()
+            ConsoleInterface.__tasks_menu(TaskMenuType.RUNNING)
         elif value == '3':
-            ConsoleInterface.__finished_tasks()
+            ConsoleInterface.__tasks_menu(TaskMenuType.FINISHED)
         elif value == '4':
-            ConsoleInterface.__new_task()
+            ConsoleInterface.__tasks_menu(TaskMenuType.COMPLETED)
         elif value == '5':
+            ConsoleInterface.__new_task()
+        elif value == '6':
             ConsoleInterface.__exit()
         else:
             return False
         return True
 
     @staticmethod
-    def __all_tasks():
-        for task in data_manager.get_all():
+    def __tasks_menu(task_menu_type, search_query = "", page = 1):
+        tasks = ConsoleInterface.__get_tasks(task_menu_type, search_query, page);
+        ConsoleInterface.__print_tasks(tasks)
+        print("1.Select page\n2.Search by name\n3.Select by id\n4.Exit to main menu");
+        input_is_correct = True
+        while not input_is_correct:
+            answer = prompt('Enter your variant: ')
+            input_is_correct = ConsoleInterface.__tasks_redirect(answer)
+            print("Your input was not correct, try again")
+
+    @staticmethod
+    def __print_tasks(tasks):
+        if tasks.length == 0:
+            print("No tasks that match your query");
+        for task in tasks:
             print("%d. %s, %s, %s, %s" % (task.task_id, task.name, task.date_start, task.date_end, task.is_completed))
-        print("Select one task by typing its number of press 0 to exit back: ");
-        answer = prompt('Enter your variant: ');
 
     @staticmethod
-    def __current_tasks():
-        print("2")
+    def __get_tasks(task_menu_type, search_query, page):
+        if task_menu_type == TaskMenuType.ALL:
+            return data_manager.get_all((page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE, search_query)
 
     @staticmethod
-    def __finished_tasks():
-        print("3")
+    def __tasks_redirect(value: int) -> bool:
+        if value == '1':
+            ConsoleInterface.__get_page()
+        elif value == '2':
+            ConsoleInterface.__get_query()
+        elif value == '3':
+            ConsoleInterface.__get_id()
+        elif value == '4':
+            pass
+        else:
+            return False
+        return True
+
 
     @staticmethod
     def __new_task():
