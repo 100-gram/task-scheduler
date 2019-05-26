@@ -46,10 +46,12 @@ class DataManager:
         for i, task in enumerate(storage.tasks):
             if task.task_id == task_id:
                 storage.tasks[i] = new_task
-        storage.save()
+                storage.save()
+                return True
+        return False
 
     @classmethod
-    def update_task_info(cls, task_id: int, name: str, description: str, date_start, duration: int, is_complited: bool):
+    def update_task_info(cls, task_id: int, name: str, description: str, date_start, duration: int):
         storage = DataManager.create()
         for i, task in enumerate(storage.tasks):
             if task.task_id == task_id:
@@ -57,15 +59,18 @@ class DataManager:
                 storage.tasks[i].description = description
                 storage.tasks[i].date_start = parser.parse(date_start)
                 storage.tasks[i].date_end = parser.parse(date_start) + timedelta(minutes=duration)
-                storage.tasks[i].is_complited = is_complited
-        storage.save()
+                storage.save()
+                return True
+        return False
+
 
     @classmethod
     def delete_task(cls, task_id: int):
         storage = DataManager.create()
+        len = storage.tasks.__len__()
         storage.tasks = list(filter(lambda task: task.task_id != task_id, storage.tasks))
         storage.save()
-
+        return len != storage.tasks.__len__()
     @classmethod
     def complete_task(cls, task_id: int):
         storage = DataManager.create()
@@ -81,6 +86,7 @@ class DataManager:
         storage.tasks.append(task)
         storage.next_id += 1
         storage.save()
+        return task
 
     @classmethod
     def create_task(cls, name: str, description: str, date_start, duration: int):
@@ -89,6 +95,7 @@ class DataManager:
         storage.tasks.append(task)
         storage.next_id += 1
         storage.save()
+        return task
 
     @classmethod
     def tasks_from_json(cls, storage_obj):
