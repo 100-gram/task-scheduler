@@ -7,3 +7,8 @@ class TaskStatus(Enum):
     PLANNED = auto()
     RUNNING = auto()
     FINISHED = auto()
+
+    def __json__(self):
+        return self.name
+
+    for_json = __json__  # supported by simplejson
