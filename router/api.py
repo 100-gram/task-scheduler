@@ -24,6 +24,15 @@ def get_task(task_id):
     return simplejson.dumps({"task": item}, indent=4, for_json=True)
 
 
+@api.route('/tasks/complete/<int:task_id>', methods=['GET'])
+def complete_task(task_id):
+    if DataManager.complete_task(task_id):
+        item = list(filter(lambda t: t.task_id == task_id, DataManager.get_all()))
+        return simplejson.dumps({"task": item}, indent=4, for_json=True)
+    else:
+        abort(404)
+
+
 @api.route('/tasks', methods=['POST'])
 def create_task():
     if not request.json or 'name' not in request.json or 'description' not in request.json \

@@ -3,13 +3,13 @@ from datetime import timedelta
 
 
 class Task:
-    def __init__(self, task_id: int, name: str, description: int, date_start, date_end, is_complited: bool):
+    def __init__(self, task_id: int, name: str, description: int, date_start, date_end, is_completed: bool):
         self.task_id = task_id
         self.name = name
         self.description = description
         self.date_start = date_start
         self.date_end = date_end
-        self.is_complited = is_complited
+        self.is_completed = is_completed
 
     def __json__(self):
         return {
@@ -18,7 +18,7 @@ class Task:
             'description': self.description,
             'date_start': str(self.date_start),
             'date_end': str(self.date_end),
-            'is_complited': self.is_complited
+            'is_completed': self.is_completed
         }
 
     for_json = __json__  # supported by simplejson
@@ -27,7 +27,7 @@ class Task:
     def from_json(cls, json_obj):
         obj = cls(json_obj['id'], json_obj['name'], json_obj['description'], parser.parse(json_obj['date_start']),
                   parser.parse(json_obj['date_end']),
-                  json_obj['is_complited'])
+                  json_obj['is_completed'])
         return obj
 
     @classmethod

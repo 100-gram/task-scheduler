@@ -63,7 +63,6 @@ class DataManager:
                 return True
         return False
 
-
     @classmethod
     def delete_task(cls, task_id: int):
         storage = DataManager.create()
@@ -71,13 +70,16 @@ class DataManager:
         storage.tasks = list(filter(lambda task: task.task_id != task_id, storage.tasks))
         storage.save()
         return len != storage.tasks.__len__()
+
     @classmethod
     def complete_task(cls, task_id: int):
         storage = DataManager.create()
         for task in storage.tasks:
             if task.task_id == task_id:
-                task.is_complited = True
-        storage.save()
+                task.is_completed = True
+                storage.save()
+                return True
+        return False
 
     @classmethod
     def add_task(cls, task):
