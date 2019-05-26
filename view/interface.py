@@ -5,7 +5,7 @@ from controller.datamanager import DataManager
 from enum import Enum
 from model.task_status import TaskStatus
 
-TASKS_ON_PAGE = 10;
+TASKS_ON_PAGE = 10
 
 
 class TaskMenuType(Enum):
@@ -52,7 +52,7 @@ class ConsoleInterface:
         input_is_correct = False
         while not input_is_correct:
             answer = prompt('Enter your variant: ')
-            input_is_correct = self.__tasks_redirect(answer, task_menu_type, all_pages, search_query)
+            input_is_correct = self.__tasks_menu_redirect(answer, task_menu_type, all_pages, search_query)
             if not input_is_correct:
                 print("Your input was not correct, try again")
 
@@ -75,11 +75,11 @@ class ConsoleInterface:
         else:
             return self.data_manager.get_with_status(TaskStatus.COMPLETED, offset, TASKS_ON_PAGE, search_query)
 
-    def __tasks_redirect(self, value: int, menu_type, all_pages, search_query=None) -> bool:
+    def __tasks_menu_redirect(self, value: int, menu_type, all_pages, search_query=None) -> bool:
         if value == '1':
-            self.__tasks_page_redirect(search_query, menu_type, all_pages)
+            self.__tasks_menu_change_page(search_query, menu_type, all_pages)
         elif value == '2':
-            self.__tasks_query_redirect(menu_type)
+            self.__tasks_menu_change_query(menu_type)
         elif value == '3':
             self.__task_id_redirect()
         elif value == '4':
@@ -88,7 +88,7 @@ class ConsoleInterface:
             return False
         return True
 
-    def __tasks_page_redirect(self, search_query, menu_type, all_pages):
+    def __tasks_menu_change_page(self, search_query, menu_type, all_pages):
         input_is_correct = False
         while not input_is_correct:
             page = prompt("Enter your page: ")
@@ -100,7 +100,7 @@ class ConsoleInterface:
                 print("Your page is not correct, try again")
         self.__tasks_menu(menu_type, search_query, int(page))
 
-    def __tasks_query_redirect(self, menu_type):
+    def __tasks_menu_change_query(self, menu_type):
         query = prompt("Enter your query: ")
         if len(query) > 0:
             self.__tasks_menu(menu_type, query)
