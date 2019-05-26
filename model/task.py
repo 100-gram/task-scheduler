@@ -1,9 +1,10 @@
 from dateutil import parser
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class Task:
-    def __init__(self, task_id: int, name: str, description: int, date_start, date_end, is_completed: bool):
+    def __init__(self, task_id: int, name: str, description: str, date_start: datetime, date_end: datetime,
+                 is_completed: bool):
         self.task_id = task_id
         self.name = name
         self.description = description
@@ -26,12 +27,19 @@ class Task:
     @classmethod
     def from_json(cls, json_obj):
         obj = cls(json_obj['id'], json_obj['name'], json_obj['description'], parser.parse(json_obj['date_start']),
-                  parser.parse(json_obj['date_end']),
-                  json_obj['is_completed'])
+                  parser.parse(json_obj['date_end']), json_obj['is_completed'])
         return obj
 
     @classmethod
-    def create(cls, task_id: int, name: str, description: str, date_start, duration: int):
+    def create(cls, task_id: int, name: str, description: str, date_start: datetime, duration: int):
         return cls(task_id, name, description, parser.parse(date_start),
-                   parser.parse(date_start) + timedelta(minutes=duration),
-                   False)
+                   parser.parse(date_start) + timedelta(seconds=duration), False)
+
+    def is_complited(self):
+        return self.is_completed
+
+    def make_completed(self):
+        self.is_completed = True
+
+    def make_uncompleated(self):
+        self.is_completed = False
