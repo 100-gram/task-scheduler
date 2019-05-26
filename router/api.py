@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify, abort, request
+from flask import Blueprint, Response, jsonify, abort, request
 from model.datamanager import DataManager
 import simplejson
 
@@ -13,7 +13,8 @@ def index():
 @api.route('/tasks', methods=['GET'])
 def get_tasks():
     DataManager.get_all()
-    return simplejson.dumps({"tasks": DataManager.get_all()}, indent=4, for_json=True)
+    data = simplejson.dumps({"tasks": DataManager.get_all()}, indent=4, for_json=True)
+    return Response(data, status=200, mimetype='application/json')
 
 
 @api.route('/tasks/<int:task_id>', methods=['GET'])
@@ -21,14 +22,16 @@ def get_task(task_id):
     item = list(filter(lambda t: t.task_id == task_id, DataManager.get_all()))
     if len(item) == 0:
         abort(404)
-    return simplejson.dumps({"task": item}, indent=4, for_json=True)
+    data = simplejson.dumps({"task": item}, indent=4, for_json=True)
+    return Response(data, status=200, mimetype='application/json')
 
 
 @api.route('/tasks/complete/<int:task_id>', methods=['GET'])
 def complete_task(task_id):
     if DataManager.complete_task(task_id):
         item = list(filter(lambda t: t.task_id == task_id, DataManager.get_all()))
-        return simplejson.dumps({"task": item}, indent=4, for_json=True)
+        data = simplejson.dumps({"task": item}, indent=4, for_json=True)
+        return Response(data, status=200, mimetype='application/json')
     else:
         abort(404)
 
@@ -44,7 +47,8 @@ def create_task():
     _duration = request.json['duration']
     if _name and _description and _date_start and _duration:
         task = DataManager.create_task(_name, _description, _date_start, _duration)
-        return simplejson.dumps({"task": task}, indent=4, for_json=True), 201
+        data = simplejson.dumps({"task": task}, indent=4, for_json=True)
+        return Response(data, status=201, mimetype='application/json')
     else:
         abort(400)
 
@@ -69,7 +73,8 @@ def update_item(task_id):
     if _name and _description and _date_start and _duration:
         if DataManager.update_task_info(task_id, _name, _description, _date_start, _duration):
             item = list(filter(lambda t: t.task_id == task_id, DataManager.get_all()))
-            return simplejson.dumps({"task": item}, indent=4, for_json=True), 200
+            data = simplejson.dumps({"task": item}, indent=4, for_json=True)
+            return Response(data, status=200, mimetype='application/json')
         else:
             abort(404)
     else:
