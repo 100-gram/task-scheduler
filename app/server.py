@@ -15,7 +15,8 @@ class Server(Flask):
         def run_job():
             time.sleep(1)
             clear()
-            ConsoleInterface.console_init()
+            interface = ConsoleInterface()
+            interface.console_init()
 
         t = threading.Thread(target=run_job)
         t.start()
