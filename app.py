@@ -3,6 +3,7 @@ from model.task import Task
 from controller.datamanager import DataManager
 import threading
 import time
+from console.interface import ConsoleInterface
 from router.api import api
 
 
@@ -45,15 +46,15 @@ class FlaskApp(Flask):
         test()
 
         def run_job():
-            while True:
-                print('TEST')
-                time.sleep(3)
+            time.sleep(3)
+            ConsoleInterface.console_init()
 
         t1 = threading.Thread(target=run_job)
         t1.start()
 
 
 app = FlaskApp(__name__)
+
 
 app.register_blueprint(api, url_prefix='/api/v1')
 app.config['data_manager'] = DataManager.load_from_file()
