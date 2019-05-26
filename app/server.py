@@ -4,6 +4,13 @@ from config.config import clear, shutdown_server
 import threading
 import time
 
+"""
+This app module is wrapper for base flask application.
+
+Here interface module is importing to initialize you want in background in separate thread.
+Just set your code after run_job
+"""
+
 
 class Server(Flask):
     def __init__(self, *args, **kwargs):
@@ -15,10 +22,8 @@ class Server(Flask):
         def run_job():
             time.sleep(1)
             clear()
-            interface = ConsoleInterface()
-            interface.console_init()
+            ConsoleInterface.console_init()
+            shutdown_server()
 
         t = threading.Thread(target=run_job)
         t.start()
-        t.join()
-        shutdown_server()

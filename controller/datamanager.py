@@ -82,7 +82,7 @@ class DataManager:
         self.update_from_file()
         for i, task in enumerate(self.tasks):
             if task.task_id == task_id:
-                self.tasks[i].completed = is_completed
+                self.tasks[i].is_completed = is_completed
                 self.save_to_file()
                 return True
         return False
@@ -133,7 +133,7 @@ class DataManager:
         length = array.__len__()
         if not isinstance(query, str) or query.__len__() == 0:
             return array, length
-        return list(filter(lambda x: re.search(query, x['name'] + x['description'], re.IGNORECASE), array)), length
+        return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array)), length
 
     @staticmethod
     def __paginate_and_search(array, offset=0, limit=None, query=None, status_filter=None):
