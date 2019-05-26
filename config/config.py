@@ -1,6 +1,6 @@
-from os import path
+from os import path, system, name
 from sys import modules
-from os import system, name
+from flask import request
 
 app_path = path.dirname(modules['__main__'].__file__)
 
@@ -12,3 +12,10 @@ def clear():
         system('cls')
     else:
         system('clear')
+
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()

@@ -31,12 +31,18 @@ class Task:
         return obj
 
     @classmethod
-    def create(cls, task_id: int, name: str, description: str, date_start: datetime, duration: int):
+    def create(cls, task_id: int, name: str, description: str, date_start: str, duration: int):
         return cls(task_id, name, description, parser.parse(date_start),
                    parser.parse(date_start) + timedelta(seconds=duration), False)
 
-    def is_complited(self):
+    def is_completed(self):
         return self.is_completed
+
+    def is_finished(self):
+        return datetime.now() > self.date_end
+
+    def is_running(self):
+        return self.date_start < datetime.now() < self.date_end
 
     def make_completed(self):
         self.is_completed = True
