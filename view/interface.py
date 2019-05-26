@@ -2,7 +2,8 @@ from prompt_toolkit import prompt
 import sys
 from controller.datamanager import DataManager
 
-data_manager = DataManager()
+data_manager = DataManager.load_from_file()
+
 
 class ConsoleInterface:
     @staticmethod
