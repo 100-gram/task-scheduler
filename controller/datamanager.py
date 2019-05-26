@@ -59,7 +59,7 @@ class DataManager:
             TaskStatus.FINISHED: lambda x: x.is_finished(),
         }[status]
         result = list(filter(filter_function, self.tasks))
-        return DataManager.__paginate_and_search(result, offset, limit, query)
+        return DataManager.__paginate_and_search(result, offset, limit, query, status)
 
     def get_by_id(self, task_id: int):
         self.update_from_file()
@@ -130,12 +130,13 @@ class DataManager:
 
     @staticmethod
     def __search_filter(array: [Task], query=None):
+        length = array.__len__()
         if not isinstance(query, str) or query.__len__() == 0:
-            return array
-        return list(filter(lambda x: re.search(query, x['name'] + x['description'], re.IGNORECASE), array))
+            return array, length
+        return list(filter(lambda x: re.search(query, x['name'] + x['description'], re.IGNORECASE), array)), length
 
     @staticmethod
-    def __paginate_and_search(array, offset=0, limit=None, query=None):
-        filtered = DataManager.__search_filter(array, query)
+    def __paginate_and_search(array, offset=0, limit=None, query=None, status_filter=None):
+        filtered, length = DataManager.__search_filter(array, query)
         tasks_result = DataManager.__paginate_array(filtered, offset, limit)
-        return Response(tasks_result, offset, limit, query)
+        return Response(tasks_result, offset, limit, query, length, status_filter)

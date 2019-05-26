@@ -31,7 +31,7 @@ def query_pagination_params():
     offset = request.args.get('offset')
     limit = request.args.get('limit')
     return {
-        'offset': int(offset) if offset is not None and offset.isdigit() else None,
+        'offset': int(offset) if offset is not None and offset.isdigit() else 0,
         'limit': int(limit) if limit is not None and limit.isdigit() else None,
         'query': request.args.get('query')
     }

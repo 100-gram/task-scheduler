@@ -2,10 +2,10 @@ from model.task import Task
 
 
 class Response:
-    def __init__(self, tasks: [Task], offset: int, limit: int, query: str, count_all: int, status):
+    def __init__(self, tasks: [Task], offset: int, limit: int, query: str, count_all: int, status_filter=None):
         self.tasks = tasks
         self.count_all = count_all
-        self.status = status
+        self.status_filter = status_filter
         if isinstance(offset, int) and offset >= 0:
             self.offset = offset
         else:
@@ -26,7 +26,7 @@ class Response:
             'limit': self.limit,
             'query': self.query,
             'count_all': self.count_all,
-            'status': self.status
+            'status_filter': self.status_filter
         }
 
     for_json = __json__  # supported by simplejson
