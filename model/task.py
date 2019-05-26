@@ -17,8 +17,8 @@ class Task:
             'id': self.task_id,
             'name': self.name,
             'description': self.description,
-            'date_start': str(self.date_start),
-            'date_end': str(self.date_end),
+            'date_start': self.date_start.isoformat(),
+            'date_end': self.date_end.isoformat(),
             'is_completed': self.is_completed
         }
 
@@ -26,9 +26,8 @@ class Task:
 
     @classmethod
     def from_json(cls, json_obj):
-        obj = cls(json_obj['id'], json_obj['name'], json_obj['description'], parser.parse(json_obj['date_start']),
-                  parser.parse(json_obj['date_end']), json_obj['is_completed'])
-        return obj
+        return cls(json_obj['id'], json_obj['name'], json_obj['description'], parser.parse(json_obj['date_start']),
+                   parser.parse(json_obj['date_end']), json_obj['is_completed'])
 
     @classmethod
     def create(cls, task_id: int, name: str, description: str, date_start: str, duration: int):
