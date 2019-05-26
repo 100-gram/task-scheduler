@@ -1,5 +1,6 @@
 from model.task import Task
 from config.config import storage_path
+from model.task_status import TaskStatus
 from dateutil import parser
 from datetime import timedelta
 import simplejson
@@ -47,23 +48,17 @@ class DataManager:
         self.update_from_file()
         return DataManager.__paginate_and_search(self.tasks, offset, limit, query)
 
-    def get_completed(self, offset=0, limit=None, query=None, is_complited=True):
+    def get_with_status(self, status: TaskStatus, offset=0, limit=None, query=None):
         self.update_from_file()
-        completed = list(filter(
-            lambda x: is_complited is True and x.is_complited() or is_complited is False and not x.is_complited(),
-            self.tasks
-        ))
-        return DataManager.__paginate_and_search(completed, offset, limit, query)
-
-    def get_finished(self, offset=0, limit=None, query=None):
-        self.update_from_file()
-        finished = list(filter(lambda x: x.is_finished(), self.tasks))
-        return DataManager.__paginate_and_search(finished, offset, limit, query)
-
-    def get_running(self, offset=0, limit=None, query=None):
-        self.update_from_file()
-        running = list(filter(lambda x: x.is_running(), self.tasks))
-        return DataManager.__paginate_and_search(running, offset, limit, query)
+        filter_function = {
+            TaskStatus.COMPLETED: lambda x: x.is_complited(),
+            TaskStatus.UNCOMPLETED: lambda x: not x.is_complited(),
+            TaskStatus.PLANNED: lambda x: not x.is_finished() and not x.is_running(),
+            TaskStatus.RUNNING: lambda x: x.is_running(),
+            TaskStatus.FINISHED: lambda x: x.is_finished(),
+        }[status]
+        result = list(filter(filter_function, self.tasks))
+        return DataManager.__paginate_and_search(result, offset, limit, query)
 
     def update_task(self, task_id: int, new_task):
         new_task.task_id = task_id
