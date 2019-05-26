@@ -20,9 +20,9 @@ def get_tasks():
     except KeyError:
         tasks_status = None
     if isinstance(tasks_status, TaskStatus):
-        data = storage.get_all(params['offset'], params['limit'], params['query'])
-    else:
         data = storage.get_with_status(tasks_status, params['offset'], params['limit'], params['query'])
+    else:
+        data = storage.get_all(params['offset'], params['limit'], params['query'])
     return json_response(data)
 
 

@@ -28,8 +28,10 @@ def json_response(data, status=200):
 
 
 def query_pagination_params():
+    offset = request.args.get('offset')
+    limit = request.args.get('limit')
     return {
-        'offset': request.args.get('offset'),
-        'limit': request.args.get('limit'),
+        'offset': int(offset) if offset is not None and offset.isdigit() else None,
+        'limit': int(limit) if limit is not None and limit.isdigit() else None,
         'query': request.args.get('query')
     }

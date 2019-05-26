@@ -34,7 +34,7 @@ class Task:
         return cls(task_id, name, description, parser.parse(date_start),
                    parser.parse(date_start) + timedelta(seconds=duration), False)
 
-    def is_completed(self):
+    def completed(self):
         return self.is_completed
 
     def is_finished(self):

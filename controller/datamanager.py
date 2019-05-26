@@ -43,7 +43,7 @@ class DataManager:
         data_str = open(storage_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
         self.next_id = storage_obj['next_id']
-        self.tasks = storage_obj['tasks']
+        self.tasks = DataManager.tasks_from_json(storage_obj['tasks'])
 
     def get_all(self, offset=0, limit=None, query=None):
         self.update_from_file()
@@ -52,8 +52,8 @@ class DataManager:
     def get_with_status(self, status: TaskStatus, offset=0, limit=None, query=None):
         self.update_from_file()
         filter_function = {
-            TaskStatus.COMPLETED: lambda x: x.is_complited(),
-            TaskStatus.UNCOMPLETED: lambda x: not x.is_complited(),
+            TaskStatus.COMPLETED: lambda x: x.completed(),
+            TaskStatus.UNCOMPLETED: lambda x: not x.completed(),
             TaskStatus.PLANNED: lambda x: not x.is_finished() and not x.is_running(),
             TaskStatus.RUNNING: lambda x: x.is_running(),
             TaskStatus.FINISHED: lambda x: x.is_finished(),
@@ -132,7 +132,7 @@ class DataManager:
     def __search_filter(array: [Task], query=None):
         if not isinstance(query, str) or query.__len__() == 0:
             return array
-        return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array))
+        return list(filter(lambda x: re.search(query, x['name'] + x['description'], re.IGNORECASE), array))
 
     @staticmethod
     def __paginate_and_search(array, offset=0, limit=None, query=None):
