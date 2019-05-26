@@ -14,8 +14,10 @@ class FlaskApp(Flask):
 
     @staticmethod
     def _activate_background_job():
-        test()
-
+        """
+        asdfadf
+        :return:
+        """
         def run_job():
             time.sleep(3)
             ConsoleInterface.console_init()
@@ -38,7 +40,7 @@ def hello_world():
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    return make_response(jsonify({'error': error}), 404)
 
 
 if __name__ == '__main__':
