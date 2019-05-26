@@ -1,8 +1,9 @@
 from model.task import Task
+from config.config import storage_path
 from dateutil import parser
 from datetime import timedelta
 import simplejson
-from config.config import storage_path
+import re
 
 
 class DataManager:
@@ -28,16 +29,41 @@ class DataManager:
 
     @classmethod
     def load_from_file(cls):
-        new_str = open(storage_path, 'r').read()
-        storage_obj = simplejson.loads(new_str)
+        data_str = open(storage_path, 'r').read()
+        storage_obj = simplejson.loads(data_str)
         return DataManager.from_json(storage_obj)
 
-    def save(self):
+    def save_to_file(self):
         with open(storage_path, 'w') as outfile:
             simplejson.dump(self, outfile, indent=4, for_json=True)
 
-    def get_all(self):
-        return self.tasks
+    def update_from_file(self):
+        data_str = open(storage_path, 'r').read()
+        storage_obj = simplejson.loads(data_str)
+        self.next_id = storage_obj['next_id']
+        self.tasks = storage_obj['tasks']
+
+    def get_all(self, offset=0, limit=None, query=None):
+        self.update_from_file()
+        return DataManager.__paginate_and_search(self.tasks, offset, limit, query)
+
+    def get_completed(self, offset=0, limit=None, query=None, is_complited=True):
+        self.update_from_file()
+        completed = list(filter(
+            lambda x: is_complited is True and x.is_complited() or is_complited is False and not x.is_complited(),
+            self.tasks
+        ))
+        return DataManager.__paginate_and_search(completed, offset, limit, query)
+
+    def get_finished(self, offset=0, limit=None, query=None):
+        self.update_from_file()
+        finished = list(filter(lambda x: x.is_finished(), self.tasks))
+        return DataManager.__paginate_and_search(finished, offset, limit, query)
+
+    def get_running(self, offset=0, limit=None, query=None):
+        self.update_from_file()
+        running = list(filter(lambda x: x.is_running(), self.tasks))
+        return DataManager.__paginate_and_search(running, offset, limit, query)
 
     def update_task(self, task_id: int, new_task):
         new_task.task_id = task_id
@@ -86,3 +112,18 @@ class DataManager:
         self.next_id += 1
         self.save()
         return task
+
+    @staticmethod
+    def __paginate_array(array, offset=0, limit=None):
+        return array[offset:(limit + offset if limit is not None else None)]
+
+    @staticmethod
+    def __search_filter(array: [Task], query=None):
+        if query is None:
+            return array
+        return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array))
+
+    @staticmethod
+    def __paginate_and_search(array, offset=0, limit=None, query=None):
+        filtered = DataManager.__search_filter(array, query)
+        return DataManager.__paginate_array(filtered, offset, limit)

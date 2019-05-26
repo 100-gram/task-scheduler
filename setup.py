@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='task-scheduler',
     version='1.0.0',
-    packages=['model', 'config', 'router', 'controller'],
+    packages=['model', 'config', 'router', 'controller', 'app', 'view'],
     url='https://github.com/100-gram/task-scheduler.git',
     license='MIT',
     author='100-gram',
