@@ -2,10 +2,7 @@ from model.task import Task
 from dateutil import parser
 from datetime import timedelta
 import simplejson
-import os
-import sys
-
-storage_path = os.path.dirname(sys.modules['__main__'].__file__) + '\\data\\tasks.json'
+from config.config import storage_path
 
 
 class DataManager:
@@ -76,7 +73,6 @@ class DataManager:
             if task.task_id == task_id:
                 task.is_complited = True
         storage.save()
-
 
     @classmethod
     def add_task(cls, task):

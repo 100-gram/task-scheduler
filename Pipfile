@@ -10,6 +10,8 @@ Flask = "==1.0.3"
 flask-restful = "*"
 prompt-toolkit = "*"
 python-dateutil = "*"
+flask-script = "*"
+simplejson = "*"
 
 [requires]
 python_version = "3.6"

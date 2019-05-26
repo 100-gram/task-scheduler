@@ -1,41 +1,11 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify
 from model.task import Task
-from os import path
 from model.datamanager import DataManager
-import json
-import simplejson
+import threading
+import time
+from router.api import api
 
-app = Flask(__name__)
-
-storage_path = path.dirname(path.realpath(__file__)) + '\\data\\tasks.json'
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-
-
-incomes = [
-  {'description': 'salary', 'amount': 5000}
-]
-
-
-@app.route('/incomes')
-def get_incomes():
-    return jsonify(incomes)
-
-
-@app.route('/incomes', methods=['POST'])
-def add_income():
-    incomes.append(request.get_json())
-    return '', 204
-
-
-if __name__ == '__main__':
+def test():
     task = Task(1, 'name1', 'description1', "Aug 28 1999 12:00AM", "Aug 30 1999 12:00AM", False)
     task3 = Task(2, 'name2', 'description2', "Aug 28 1999 12:00AM", "Aug 30 1999 12:00AM", False)
     task2 = Task(3, 'name3', 'description3', "Aug 28 1999 12:00AM", "Aug 30 1999 12:00AM", False)
@@ -60,3 +30,40 @@ if __name__ == '__main__':
     DataManager.update_task(157, Task.create(4, 'Edit task', 'Edit', "Aug 28 1999 12:00AM", 55))
     for val in dict_new2:
         print(val.name + val.description)
+
+
+class FlaskApp(Flask):
+    def __init__(self, *args, **kwargs):
+        super(FlaskApp, self).__init__(*args, **kwargs)
+        self._activate_background_job()
+
+    @staticmethod
+    def _activate_background_job():
+        test()
+
+        def run_job():
+            while True:
+                print('TEST')
+                time.sleep(3)
+
+        t1 = threading.Thread(target=run_job)
+        t1.start()
+
+
+app = FlaskApp(__name__)
+
+app.register_blueprint(api, url_prefix='/api/v1')
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+if __name__ == '__main__':
+    app.run()
