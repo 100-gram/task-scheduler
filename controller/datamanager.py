@@ -1,8 +1,8 @@
 from model.task import Task
+from config.config import storage_path
 from dateutil import parser
 from datetime import timedelta
 import simplejson
-from config.config import storage_path
 
 
 class DataManager:

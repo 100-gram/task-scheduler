@@ -3,7 +3,7 @@ from model.task import Task
 from controller.datamanager import DataManager
 import threading
 import time
-from console.interface import ConsoleInterface
+from view.interface import ConsoleInterface
 from router.api import api
 
 
