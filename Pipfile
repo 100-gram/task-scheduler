@@ -12,8 +12,7 @@ prompt-toolkit = "*"
 python-dateutil = "*"
 flask-script = "*"
 simplejson = "*"
-pydoc = "*"
-pydoc3 = "*"
+termcolor = "*"
 
 [requires]
 python_version = "3.6"

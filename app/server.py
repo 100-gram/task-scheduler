@@ -21,8 +21,8 @@ class Server(Flask):
     def _activate_background_job():
         def run_job():
             time.sleep(1)
-            clear()
-            ConsoleInterface.console_init()
+            console_interface = ConsoleInterface()
+            console_interface.console_init()
             shutdown_server()
 
         t = threading.Thread(target=run_job)
