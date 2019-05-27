@@ -3,12 +3,23 @@ from sys import modules
 from flask import request, Response
 import simplejson
 
+"""
+This module store some configuration data
+
+Here provided path to storage file and some others helper functions
+"""
+
 app_path = path.dirname(modules['__main__'].__file__)
 
 storage_path = path.join(app_path, 'data', 'tasks.json')
 
 
 def clear():
+    """
+    Clear console function os-independent
+
+    :return: NoneType
+    """
     if name == 'nt':
         system('cls')
     else:
@@ -16,6 +27,11 @@ def clear():
 
 
 def shutdown_server():
+    """
+    Shutdown flask server
+
+    :return: NoneType
+    """
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
@@ -23,11 +39,23 @@ def shutdown_server():
 
 
 def json_response(data, status=200):
+    """
+    Make flask response with json data and passed http status
+
+    :param data: object or list. This data will be serialized to json string
+    :param status: int. Http response code status
+    :return: Response flask object, with application/json data
+    """
     json = simplejson.dumps(data, indent=4, for_json=True)
     return Response(json, status=status, mimetype='application/json')
 
 
 def query_pagination_params():
+    """
+    Make dict with requests params, which are used for pagination and filtering
+
+    :return: dict. Here offset is int (by default 0); limit is int (by default None); query is str
+    """
     offset = request.args.get('offset')
     limit = request.args.get('limit')
     return {
