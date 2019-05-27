@@ -12,7 +12,10 @@ prompt-toolkit = "*"
 python-dateutil = "*"
 flask-script = "*"
 simplejson = "*"
-termcolor = "*"
+pyflakes = "*"
+pep8 = "*"
+requests = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"

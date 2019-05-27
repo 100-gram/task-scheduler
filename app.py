@@ -5,7 +5,6 @@ from app.server import Server
 from router.api import api
 import logging
 
-
 app = Server(__name__)
 log = logging.getLogger('werkzeug')
 log.disabled = True
