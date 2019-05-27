@@ -7,13 +7,30 @@ from datetime import timedelta
 import simplejson
 import re
 
+"""
+This controller for json storage of Task entities
+
+Provide all methods to manage with Task entities
+"""
+
 
 class DataManager:
     def __init__(self, next_id: int, tasks: [Task]):
+        """
+        Constructor for DataManager object
+
+        :param next_id: id of task, that will be created next
+        :param tasks: list of Task entities
+        """
         self.next_id = next_id
         self.tasks = tasks
 
     def __json__(self):
+        """
+        JSON serialization for DataManager object
+
+        :return: dict with all inner fields
+        """
         return {
             'next_id': self.next_id,
             'tasks': self.tasks,
@@ -23,14 +40,32 @@ class DataManager:
 
     @classmethod
     def from_json(cls, json_obj):
+        """
+        Creating DataManager object from JSON object
+
+        :param json_obj: JSON object (dict)
+        :return: instance of DataManager
+        """
         return cls(json_obj['next_id'], DataManager.tasks_from_json(json_obj['tasks']))
 
     @classmethod
     def tasks_from_json(cls, storage_obj):
+        """
+        Deserialize Tasks from JSON object
+
+        :param storage_obj: JSON serialized Tasks
+        :return: list of Task entities
+        """
         return list(map(lambda x: Task.from_json(x), storage_obj))
 
     @classmethod
     def load_from_file(cls):
+        """
+        Create DataManager instance from file with JSON data
+
+
+        :return:
+        """
         data_str = open(storage_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
         return DataManager.from_json(storage_obj)

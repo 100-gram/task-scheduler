@@ -2,6 +2,12 @@ from flask import Blueprint, jsonify, abort, request, current_app
 from config.config import json_response, query_pagination_params
 from model.task_status import TaskStatus
 
+"""
+This api module
+
+Api module to perform CRUD operations with Task entities
+"""
+
 api = Blueprint('api', __name__)
 
 
