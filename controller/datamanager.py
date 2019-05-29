@@ -63,28 +63,50 @@ class DataManager:
         """
         Create DataManager instance from file with JSON data
 
-
-        :return:
+        :return:instance of DataManager
         """
         data_str = open(storage_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
         return DataManager.from_json(storage_obj)
 
     def save_to_file(self):
+        """
+        Save changes( tasks ans next_id) in data file
+        :return: None
+        """
         with open(storage_path, 'w') as outfile:
             simplejson.dump(self, outfile, indent=4, for_json=True)
 
     def update_from_file(self):
+        """
+        Get changes( tasks ans next_id) from data file
+        :return: None
+        """
         data_str = open(storage_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
         self.next_id = storage_obj['next_id']
         self.tasks = DataManager.tasks_from_json(storage_obj['tasks'])
 
     def get_all(self, offset=0, limit=None, query=None):
+        """
+        Get all filtered and paginated tasks
+        :param offset: count of skipping tasks
+        :param limit: count of tasks in page
+        :param query: search parameter
+        :return: list of Task entities
+        """
         self.update_from_file()
         return DataManager.__paginate_and_search(self.tasks, offset, limit, query)
 
     def get_with_status(self, status: TaskStatus, offset=0, limit=None, query=None):
+        """
+        Get all filtered and paginated tasks with selected status
+        :param status: selected status of Task
+        :param offset: count of skipping tasks
+        :param limit: count of tasks in page
+        :param query: search parameter
+        :return: list of Task entities
+        """
         self.update_from_file()
         filter_function = {
             TaskStatus.COMPLETED: lambda x: x.completed(),
@@ -97,6 +119,11 @@ class DataManager:
         return DataManager.__paginate_and_search(result, offset, limit, query, status)
 
     def get_by_id(self, task_id: int):
+        """
+        Get Task entity with selected id
+        :param task_id: id of searched Task
+        :return: Task entity if task with selected id exists else False
+        """
         self.update_from_file()
         for i, task in enumerate(self.tasks):
             if task.task_id == task_id:
@@ -104,6 +131,12 @@ class DataManager:
         return False
 
     def update_task(self, task_id: int, new_task: Task):
+        """
+        Update Task dy id
+        :param task_id: id of updating Task
+        :param new_task: Task entity with updating info
+        :return: True if entity was updated else False
+        """
         self.update_from_file()
         new_task.task_id = task_id
         for i, task in enumerate(self.tasks):
@@ -114,6 +147,13 @@ class DataManager:
         return False
 
     def change_task_status(self, task_id: int, is_completed: bool):
+        """
+        Change Task status
+
+        :param task_id: id of updating Task
+        :param is_completed: Task status
+        :return:True if entity was updated else False
+        """
         self.update_from_file()
         for i, task in enumerate(self.tasks):
             if task.task_id == task_id:
@@ -123,6 +163,16 @@ class DataManager:
         return False
 
     def update_task_info(self, task_id: int, name: str, description: str, date_start: str, duration: int):
+        """
+        Update Task info
+
+        :param task_id: id of updating Task
+        :param name: updated name of Task
+        :param description: updated description of Task
+        :param date_start: updated start date of Task
+        :param duration: updated duration of Task
+        :return: True if entity was updated else False
+        """
         self.update_from_file()
         for i, task in enumerate(self.tasks):
             if task.task_id == task_id:
@@ -135,6 +185,12 @@ class DataManager:
         return False
 
     def delete_task(self, task_id: int):
+        """
+        Delete Task
+
+        :param task_id: id of deleted Task
+        :return: rue if entity was deleted else False
+        """
         self.update_from_file()
         length = self.tasks.__len__()
         self.tasks = list(filter(lambda task: task.task_id != task_id, self.tasks))
@@ -142,6 +198,12 @@ class DataManager:
         return length != self.tasks.__len__()
 
     def add_task(self, task: Task):
+        """
+        Add new Task to storage
+
+        :param task: new Task entity
+        :return: added Task entity
+        """
         self.update_from_file()
         task.task_id = self.next_id
         self.tasks.append(task)
@@ -150,6 +212,15 @@ class DataManager:
         return task
 
     def create_task(self, name: str, description: str, date_start: str, duration: int):
+        """
+        Create new Task
+
+        :param name: name of new Task
+        :param description: description of new Task
+        :param date_start: start date of new Task
+        :param duration: duration of new Task
+        :return: created Task entity
+        """
         self.update_from_file()
         task = Task.create(self.next_id, name, description, date_start, duration)
         self.tasks.append(task)
@@ -159,12 +230,27 @@ class DataManager:
 
     @staticmethod
     def __paginate_array(array, offset=0, limit=None):
+        """
+        Paginate list of Tasks
+
+        :param array: list of Tasks
+        :param offset: count of skipping tasks
+        :param limit: count of Tasks in page
+        :return: paginated list of Tasks
+        """
         if isinstance(offset, int) and offset >= 0 and ((isinstance(limit, int) and limit > 0) or limit is None):
             return array[offset:(limit + offset if limit is not None else None)]
         return array
 
     @staticmethod
     def __search_filter(array: [Task], query=None):
+        """
+        Search Tasks in list
+
+        :param array: list of Tasks
+        :param query: searched parameter
+        :return: list of Tasks that consist searched parameter
+        """
         length = array.__len__()
         if not isinstance(query, str) or query.__len__() == 0:
             return array, length
@@ -172,6 +258,16 @@ class DataManager:
 
     @staticmethod
     def __paginate_and_search(array, offset=0, limit=None, query=None, status_filter=None):
+        """
+        Paginate list of Tasks and Search Tasks in it
+
+        :param array: list of Tasks
+        :param offset: count of skipping tasks
+        :param limit: count of Tasks in page
+        :param query: searched parameter
+        :param status_filter: searched Task status
+        :return: paginated list of Tasks that consist searched parameter
+        """
         filtered, length = DataManager.__search_filter(array, query)
         tasks_result = DataManager.__paginate_array(filtered, offset, limit)
         return Response(tasks_result, offset, limit, query, length, status_filter)

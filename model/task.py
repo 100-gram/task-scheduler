@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 
 
 class Task:
-    def __init__(self, task_id: int, name: str, description: str, date_start: datetime, date_end: datetime,
+    def __init_(self, task_id: int, name: str, description: str, date_start: datetime, date_end: datetime,
                  is_completed: bool):
         self.task_id = task_id
         self.name = name
