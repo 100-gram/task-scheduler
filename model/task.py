@@ -12,6 +12,13 @@ class Task:
         self.date_end = date_end
         self.is_completed = is_completed
 
+    def __eq__(self, other):
+        if not isinstance(other, Task):
+            return False
+        return self.task_id == other.task_id and self.name == other.name and self.description == other.description \
+            and self.date_start == other.date_start and self.date_end == other.date_end\
+            and self.is_completed == other.is_completed
+
     def __json__(self):
         return {
             'id': self.task_id,
@@ -46,5 +53,5 @@ class Task:
     def make_completed(self):
         self.is_completed = True
 
-    def make_uncompleated(self):
+    def make_uncompleted(self):
         self.is_completed = False

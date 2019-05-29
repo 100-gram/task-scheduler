@@ -1,7 +1,7 @@
 from flask import make_response, jsonify
 from controller.datamanager import DataManager
 from werkzeug.exceptions import HTTPException
-from app.server import Server
+from server.server import Server
 from router.api import api
 import logging
 

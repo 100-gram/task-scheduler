@@ -6,18 +6,9 @@ class Response:
         self.tasks = tasks
         self.count_all = count_all
         self.status_filter = status_filter
-        if isinstance(offset, int) and offset >= 0:
-            self.offset = offset
-        else:
-            self.offset = 0
-        if isinstance(limit, int) and limit > 0:
-            self.limit = limit
-        else:
-            self.limit = None
-        if isinstance(query, str) and query.__len__() > 0:
-            self.query = query
-        else:
-            self.query = None
+        self.offset = offset if isinstance(offset, int) and offset >= 0 else 0
+        self.limit = limit if isinstance(limit, int) and limit > 0 else None
+        self.query = query if isinstance(query, str) and query.__len__() > 0 else None
 
     def __json__(self):
         return {

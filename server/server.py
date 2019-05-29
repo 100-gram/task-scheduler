@@ -5,7 +5,7 @@ import threading
 import time
 
 """
-This app module is wrapper for base flask application.
+This server module is wrapper for base flask application.
 
 Here interface module is importing to initialize cui in background in separate thread.
 Just calling needed method in run_job function 

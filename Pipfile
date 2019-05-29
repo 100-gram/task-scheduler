@@ -16,6 +16,7 @@ pyflakes = "*"
 pep8 = "*"
 requests = "*"
 pytest = "*"
+termcolor = "*"
 
 [requires]
 python_version = "3.6"
