@@ -11,7 +11,8 @@ Here provided path to storage file and some others helper functions
 
 app_path = path.dirname(modules['__main__'].__file__)
 
-storage_path = path.join(app_path, 'data', 'tasks.json')
+storage_path = "/home/a_krava/projects/github/task-scheduler/data/tasks.json"
+# storage_path = path.join(app_path, 'data', 'tasks.json')
 
 
 def clear():
@@ -63,3 +64,28 @@ def query_pagination_params():
         'limit': int(limit) if limit is not None and limit.isdigit() else None,
         'query': request.args.get('query')
     }
+
+
+def task_params_from_request():
+    """
+    Make dict with requests params of Task entity
+
+    :return: dict. all information about task
+    """
+    return {
+        'name': request.json['name'],
+        'description': request.json['description'],
+        'date_start': request.json['date_start'],
+        'duration': request.json['duration']
+    }
+
+
+def check_task_entity(task):
+    return task.name and isinstance(task.name, str) and task.description and isinstance(task.description, str) \
+           and task.date_start and isinstance(task.date_start, str) and task.duration \
+           and isinstance(task.duration, int)
+
+
+def check_pagination_params():
+    return not request.json or 'name' not in request.json or 'description' not in request.json \
+           or 'date_start' not in request.json or 'duration' not in request.json

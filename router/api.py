@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, abort, request, current_app
-from config.config import json_response, query_pagination_params
+from config.config import json_response, query_pagination_params, task_params_from_request, \
+    check_task_entity, check_pagination_params
 from model.task_status import TaskStatus
 
 """
@@ -58,17 +59,12 @@ def complete_task(task_id):
 @api.route('/tasks', methods=['POST'])
 def create_task():
     storage = current_app.config["data_manager"]
-    if not request.json or 'name' not in request.json or 'description' not in request.json \
-            or 'date_start' not in request.json or'duration' not in request.json:
+    if check_pagination_params():
         abort(400, "Please, pass all needed data to create task")
-    _name = request.json['name']
-    _description = request.json['description']
-    _date_start = request.json['date_start']
-    _duration = request.json['duration']
-    if _name and isinstance(_name, str) and _description and isinstance(_description, str) and _date_start \
-            and isinstance(_date_start, str) and _duration and isinstance(_duration, int):
+    task = task_params_from_request()
+    if check_task_entity(task):
         try:
-            task = storage.create_task(_name, _description, _date_start, _duration)
+            task = storage.create_task(task.name, task.description, task.date_start, task.duration)
         except ValueError as e:
             return abort(400, str(e))
         return json_response({"task": task}, 201)
@@ -88,18 +84,13 @@ def delete_item(task_id):
 @api.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_item(task_id):
     storage = current_app.config["data_manager"]
-    if not request.json or 'name' not in request.json or 'description' not in request.json \
-            or 'date_start' not in request.json or 'duration' not in request.json:
+    if check_pagination_params():
         abort(400, "Please, pass all needed data to update task")
-    _name = request.json['name']
-    _description = request.json['description']
-    _date_start = request.json['date_start']
-    _duration = request.json['duration']
-    if not(_name and isinstance(_name, str) and _description and isinstance(_description, str) and _date_start
-           and isinstance(_date_start, str) and _duration and isinstance(_duration, int)):
+    task = task_params_from_request()
+    if not check_task_entity(task):
         return abort(400, "Invalid data, couldn't update")
     try:
-        if storage.update_task_info(task_id, _name, _description, _date_start, _duration):
+        if storage.update_task_info(task_id, task.name, task.description, task.date_start, task.duration):
             task = storage.get_by_id(task_id)
             return json_response({"task": task})
         else:
