@@ -83,7 +83,7 @@ def task_params_parser():
 
 def query_pagination_params_parser():
     """
-     Make dict with requests params, which are used for pagination and filtering
+    Make dict with requests params, which are used for pagination and filtering
 
     :return: dict. Here offset is int; limit is int; query is str
     """

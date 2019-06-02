@@ -2,6 +2,8 @@ from enum import Enum, auto
 
 """
 Enum of Task status
+
+Represents all possible statuses of task
 """
 
 

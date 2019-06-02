@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, abort, request
 from controller.datamanager import DataManager
-from config.config import json_response
+from config.config import json_response, storage_path
 
 """
 This api module
@@ -13,7 +13,12 @@ api = Blueprint('api', __name__)
 
 @api.route('/')
 def index():
-    return jsonify({'info': 'You can get info about api in doc/documentation.html'})
+    """
+    Root handler for api path
+
+    :return: JSON Response with information where user can find a documentation
+    """
+    return jsonify({'info': 'You can get info about api in doc folder of this project'})
 
 
 @api.route('/tasks/complete/<int:task_id>', methods=['PATCH'])
@@ -32,7 +37,7 @@ def complete_task(task_id):
         set_uncompleted = True
     else:
         set_uncompleted = False
-    storage = DataManager.load_from_file()
+    storage = DataManager.load_from_file(storage_path)
     if storage.change_task_status(task_id, not set_uncompleted):
         task = storage.get_by_id(task_id)
         return json_response({"task": task})

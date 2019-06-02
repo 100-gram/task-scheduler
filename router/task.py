@@ -1,13 +1,22 @@
 from flask import abort
 from flask_restful import Resource
-from config.config import json_response, task_params_parser
+from config.config import json_response, task_params_parser, storage_path
 from controller.datamanager import DataManager
+
+"""
+Task restful api module 
+
+Provide methods to manage with Task entity
+"""
 
 
 class Task(Resource):
+    """
+    Create instance of Task restful api route
+    """
     def __init__(self, *args, **kwargs):
         super(Task, self).__init__(*args, **kwargs)
-        self.data_manager = DataManager.load_from_file()
+        self.data_manager = DataManager.load_from_file(storage_path)
 
     def get(self, task_id):
         """

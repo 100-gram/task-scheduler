@@ -1,14 +1,23 @@
 from flask import abort
 from flask_restful import Resource
 from model.task_status import TaskStatus
-from config.config import json_response, task_params_parser, query_pagination_params_parser
+from config.config import json_response, task_params_parser, query_pagination_params_parser, storage_path
 from controller.datamanager import DataManager
+
+"""
+TaskList restful api module 
+
+Provide methods to get all tasks and create a new one
+"""
 
 
 class TaskList(Resource):
     def __init__(self, *args, **kwargs):
+        """
+        Create instance of TaskList restful api route
+        """
         super(TaskList, self).__init__(*args, **kwargs)
-        self.data_manager = DataManager.load_from_file()
+        self.data_manager = DataManager.load_from_file(storage_path)
 
     def get(self):
         """
