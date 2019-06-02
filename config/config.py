@@ -23,7 +23,7 @@ def clear():
     """
     Clear console function os-independent
 
-    :return: NoneType
+    :return: None
     """
     if name == 'nt':
         system('cls')
@@ -35,7 +35,7 @@ def shutdown_server():
     """
     Shutdown flask server
 
-    :return: NoneType
+    :return: None
     """
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
@@ -62,6 +62,16 @@ def json_response(data, status=200):
     :param data: object or list. This data will be serialized to json string
     :param status: int. Http response code status
     :return: Response flask object, with application/json data
+    >>> b = json_response({"simple": 100})
+    >>> b
+    <Response 21 bytes [200 OK]>
+    >>> b.data.decode("utf-8") == simplejson.dumps({"simple": 100}, indent=4, for_json=True)
+    True
+    >>> a = json_response([1, 2, None], status=404)
+    >>> a
+    <Response 26 bytes [404 NOT FOUND]>
+    >>> a.data.decode("utf-8") == simplejson.dumps([1, 2, None], indent=4, for_json=True)
+    True
     """
     json = simplejson.dumps(data, indent=4, for_json=True)
     return Response(json, status=status, mimetype='application/json')

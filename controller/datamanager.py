@@ -31,10 +31,14 @@ class DataManager:
         JSON serialization for DataManager object
 
         :return: dict with all inner fields
+        >>> file_path = "/home/a_krava/projects/github/task-scheduler/tests"
+        >>> a = DataManager.load_from_file(file_path + "/test_suit1.json")
+        >>> a.__json__().__str__() == open(file_path + "/test_suit1.txt", 'r').read()
+        True
         """
         return {
             'next_id': self.next_id,
-            'tasks': self.tasks,
+            'tasks': DataManager.tasks_to_json(self.tasks),
         }
 
     for_json = __json__  # supported by simplejson
@@ -46,18 +50,42 @@ class DataManager:
 
         :param json_obj: JSON object (dict)
         :return: instance of DataManager
+        >>> a = DataManager.load_from_file("/home/a_krava/projects/github/task-scheduler/tests/test_suit1.json")
+        >>> b = DataManager.from_json(a.__json__())
+        >>> b.next_id
+        2
+        >>> b.tasks.__len__()
+        1
         """
         return cls(json_obj['next_id'], DataManager.tasks_from_json(json_obj['tasks']))
 
-    @classmethod
-    def tasks_from_json(cls, storage_obj):
+    @staticmethod
+    def tasks_from_json(storage_obj):
         """
         Deserialize Tasks from JSON object
 
         :param storage_obj: JSON serialized Tasks
         :return: list of Task entities
+        >>> file_path = "/home/a_krava/projects/github/task-scheduler/tests"
+        >>> data_str = open(file_path + "/test_suit1.json", 'r').read()
+        >>> storage_obj = simplejson.loads(data_str)['tasks']
+        >>> a = DataManager.tasks_from_json(storage_obj)[0].__json__()
+        >>> a['name']
+        'Name'
+        >>> a['date_start']
+        '1999-08-28T21:03:05'
         """
         return list(map(lambda x: Task.from_json(x), storage_obj))
+
+    @staticmethod
+    def tasks_to_json(tasks):
+        """
+        Deserialize Tasks from JSON object
+
+        :param tasks: JSON serialized Tasks
+        :return: list of Task entities
+        """
+        return list(map(lambda x: x.__json__(), tasks))
 
     @classmethod
     def load_from_file(cls, file_path: str):
