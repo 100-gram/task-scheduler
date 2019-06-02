@@ -1,27 +1,22 @@
 from flask import make_response, jsonify
-from controller.datamanager import DataManager
 from werkzeug.exceptions import HTTPException
 from flask_restful import Api
 from server.server import Server
 from router.api import api
 from router.task_list import TaskList
 from router.task import Task
-import logging
+from config.config import disable_log, api_prefix
 
 app = Server(__name__)
-log = logging.getLogger('werkzeug')
-log.disabled = True
-app.logger.disabled = True
-api_ = Api(app)
-api_.add_resource(TaskList, '/api/v2/tasks')
-api_.add_resource(Task, '/api/v2/tasks/<int:task_id>')
-app.register_blueprint(api, url_prefix='/api/v1')
-app.config['data_manager'] = DataManager.load_from_file()
+restful_api = Api(app)
+restful_api.add_resource(TaskList, f'{api_prefix}/tasks')
+restful_api.add_resource(Task, f'{api_prefix}/tasks/<int:task_id>')
+app.register_blueprint(api, url_prefix=api_prefix)
 
 
 @app.route('/')
-def hello_world():
-    return 'Api could be found at <a href="/api/v1">/api/v1</a>'
+def root_handler():
+    return f'Api could be found at <a href="{api_prefix}">{api_prefix}</a>'
 
 
 @app.errorhandler(HTTPException)
@@ -30,4 +25,5 @@ def error_handler(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    disable_log(app)
+    app.run()

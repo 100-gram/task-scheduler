@@ -72,6 +72,7 @@ class DataManager:
     def save_to_file(self):
         """
         Save changes( tasks ans next_id) in data file
+
         :return: None
         """
         with open(storage_path, 'w') as outfile:
@@ -80,6 +81,7 @@ class DataManager:
     def update_from_file(self):
         """
         Get changes( tasks ans next_id) from data file
+
         :return: None
         """
         data_str = open(storage_path, 'r').read()
@@ -90,6 +92,7 @@ class DataManager:
     def get_all(self, offset=0, limit=None, query=None):
         """
         Get all filtered and paginated tasks
+
         :param offset: count of skipping tasks
         :param limit: count of tasks in page
         :param query: search parameter
@@ -101,6 +104,7 @@ class DataManager:
     def get_with_status(self, status: TaskStatus, offset=0, limit=None, query=None):
         """
         Get all filtered and paginated tasks with selected status
+
         :param status: selected status of Task
         :param offset: count of skipping tasks
         :param limit: count of tasks in page
@@ -121,6 +125,7 @@ class DataManager:
     def get_by_id(self, task_id: int):
         """
         Get Task entity with selected id
+
         :param task_id: id of searched Task
         :return: Task entity if task with selected id exists else False
         """
@@ -133,6 +138,7 @@ class DataManager:
     def update_task(self, task_id: int, new_task: Task):
         """
         Update Task by id
+
         :param task_id: id of updating Task
         :param new_task: Task entity with updating info
         :return: True if entity was updated else False

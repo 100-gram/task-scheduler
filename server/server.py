@@ -16,6 +16,7 @@ class Server(Flask):
     def __init__(self, *args, **kwargs):
         """
         Constructor for Server
+
         :param args: arguments
         :param kwargs: arguments with keys
         """

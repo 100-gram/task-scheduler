@@ -31,6 +31,7 @@ class Task:
     def __eq__(self, other):
         """
         Compare two Task entity
+
         :param other: second Task entity
         :return: True if entity is equal else False
         """

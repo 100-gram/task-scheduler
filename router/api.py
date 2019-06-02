@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, abort, request, current_app
+from flask import Blueprint, jsonify, abort, request
+from controller.datamanager import DataManager
 from config.config import json_response
 
 """
@@ -31,7 +32,7 @@ def complete_task(task_id):
         set_uncompleted = True
     else:
         set_uncompleted = False
-    storage = current_app.config["data_manager"]
+    storage = DataManager.load_from_file()
     if storage.change_task_status(task_id, not set_uncompleted):
         task = storage.get_by_id(task_id)
         return json_response({"task": task})
