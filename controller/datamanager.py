@@ -31,7 +31,7 @@ class DataManager:
         JSON serialization for DataManager object
 
         :return: dict with all inner fields
-        >>> file_path = "/home/a_krava/projects/github/task-scheduler/tests"
+        >>> file_path = "./../tests"
         >>> a = DataManager.load_from_file(file_path + "/test_suit1.json")
         >>> a.__json__().__str__() == open(file_path + "/test_suit1.txt", 'r').read()
         True
@@ -50,7 +50,7 @@ class DataManager:
 
         :param json_obj: JSON object (dict)
         :return: instance of DataManager
-        >>> a = DataManager.load_from_file("/home/a_krava/projects/github/task-scheduler/tests/test_suit1.json")
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
         >>> b = DataManager.from_json(a.__json__())
         >>> b.next_id
         2
@@ -66,7 +66,7 @@ class DataManager:
 
         :param storage_obj: JSON serialized Tasks
         :return: list of Task entities
-        >>> file_path = "/home/a_krava/projects/github/task-scheduler/tests"
+        >>> file_path = "./../tests"
         >>> data_str = open(file_path + "/test_suit1.json", 'r').read()
         >>> storage_obj = simplejson.loads(data_str)['tasks']
         >>> a = DataManager.tasks_from_json(storage_obj)[0].__json__()
@@ -84,6 +84,15 @@ class DataManager:
 
         :param tasks: JSON serialized Tasks
         :return: list of Task entities
+        >>> arr = [Task(1, "Name", "nothing", parser.parse("1999-08-28T21:03:05"), \
+            parser.parse("1999-08-28T05:55:23"), True)]
+        >>> a = DataManager.tasks_to_json(arr)[0]
+        >>> a['name']
+        'Name'
+        >>> a['date_start']
+        '1999-08-28T21:03:05'
+        >>> a['id']
+        1
         """
         return list(map(lambda x: x.__json__(), tasks))
 
@@ -94,7 +103,9 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return:instance of DataManager
+        >>> DataManager.load_from_file("./../tests/test_suit1.json")
         """
+
         data_str = open(file_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
         return DataManager.from_json(storage_obj)
