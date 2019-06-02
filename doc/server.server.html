@@ -329,7 +329,7 @@ proper&nbsp;response&nbsp;object,&nbsp;call&nbsp;:func:`make_response`.<br>
 &nbsp;&nbsp;&nbsp;This&nbsp;no&nbsp;longer&nbsp;does&nbsp;the&nbsp;exception&nbsp;handling,&nbsp;this&nbsp;code&nbsp;was<br>
 &nbsp;&nbsp;&nbsp;moved&nbsp;to&nbsp;the&nbsp;new&nbsp;:meth:`full_dispatch_request`.</tt></dd></dl>
 
-<dl><dt><a name="Server-do_teardown_appcontext"><strong>do_teardown_appcontext</strong></a>(self, exc=&lt;object object at 0x7fad5b5674e0&gt;)</dt><dd><tt>Called&nbsp;right&nbsp;before&nbsp;the&nbsp;application&nbsp;context&nbsp;is&nbsp;popped.<br>
+<dl><dt><a name="Server-do_teardown_appcontext"><strong>do_teardown_appcontext</strong></a>(self, exc=&lt;object object at 0x7f350a9b64e0&gt;)</dt><dd><tt>Called&nbsp;right&nbsp;before&nbsp;the&nbsp;application&nbsp;context&nbsp;is&nbsp;popped.<br>
 &nbsp;<br>
 When&nbsp;handling&nbsp;a&nbsp;request,&nbsp;the&nbsp;application&nbsp;context&nbsp;is&nbsp;popped<br>
 after&nbsp;the&nbsp;request&nbsp;context.&nbsp;See&nbsp;:meth:`do_teardown_request`.<br>
@@ -343,7 +343,7 @@ This&nbsp;is&nbsp;called&nbsp;by<br>
 &nbsp;<br>
 ..&nbsp;versionadded::&nbsp;0.9</tt></dd></dl>
 
-<dl><dt><a name="Server-do_teardown_request"><strong>do_teardown_request</strong></a>(self, exc=&lt;object object at 0x7fad5b5674e0&gt;)</dt><dd><tt>Called&nbsp;after&nbsp;the&nbsp;request&nbsp;is&nbsp;dispatched&nbsp;and&nbsp;the&nbsp;response&nbsp;is<br>
+<dl><dt><a name="Server-do_teardown_request"><strong>do_teardown_request</strong></a>(self, exc=&lt;object object at 0x7f350a9b64e0&gt;)</dt><dd><tt>Called&nbsp;after&nbsp;the&nbsp;request&nbsp;is&nbsp;dispatched&nbsp;and&nbsp;the&nbsp;response&nbsp;is<br>
 returned,&nbsp;right&nbsp;before&nbsp;the&nbsp;request&nbsp;context&nbsp;is&nbsp;popped.<br>
 &nbsp;<br>
 This&nbsp;calls&nbsp;all&nbsp;functions&nbsp;decorated&nbsp;with<br>
