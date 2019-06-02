@@ -1,0 +1,1 @@
+{'id': 1, 'name': 'name1', 'description': 'descr1', 'date_start': '2012-02-02T02:02:02', 'date_end': '2013-03-03T03:03:03', 'is_completed': True}

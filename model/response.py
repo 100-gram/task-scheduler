@@ -1,4 +1,5 @@
 from model.task import Task
+from config.config import test_suits_folder_path
 
 """
 Wrapper for pagination Response
@@ -32,7 +33,7 @@ class Response:
 
         :return: dict with all inner fields
         >>> a = Response([], 5, 5, "something", 20, True)
-        >>> a.__json__().__str__() == open("./../tests/test_response.txt", 'r').read()
+        >>> a.__json__().__str__() == open(test_suits_folder_path + "/test_response.txt", 'r').read()
         True
         """
         return {

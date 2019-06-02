@@ -15,8 +15,11 @@ app_path = path.dirname(modules['__main__'].__file__)
 
 api_prefix = "/api/v1"
 
-# storage_path = "/home/a_krava/projects/github/task-scheduler/data/tasks.json"
-storage_path = path.join(app_path, 'data', 'tasks.json')
+storage_path = "/home/a_krava/projects/github/task-scheduler/data/tasks.json"
+# storage_path = path.join(app_path, 'data', 'tasks.json')
+
+test_suits_folder_path = "/home/a_krava/projects/github/task-scheduler/tests"
+# test_suits_folder_path = path.join(app_path, 'tests')
 
 
 def clear():

@@ -1,5 +1,7 @@
 from dateutil import parser
 from datetime import timedelta, datetime
+from config.config import test_suits_folder_path
+import simplejson
 
 """
 Class that describe Task
@@ -39,7 +41,7 @@ class Task:
         >>> c = Task(2, "name2", "descr2", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
         >>> a.__eq__(b)
         True
-        >>>a.__eq__(c)
+        >>> a.__eq__(c)
         False
         """
         if not isinstance(other, Task):
@@ -54,7 +56,7 @@ class Task:
 
         :return: dict with all inner fields
         >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
-        >>> a.__json__().__str__() == open("./../tests/test_task.txt", 'r').read()
+        >>> a.__json__().__str__() == open(test_suits_folder_path + "/test_task.txt", 'r').read()
         True
         """
         return {
@@ -76,8 +78,8 @@ class Task:
         :param json_obj: JSON object (dict)
         :return: instance of Task
         >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
-        >>>data_str = open("./../tests/test_task.json", 'r').read()
-        >>>storage_obj = simplejson.loads(data_str)
+        >>> data_str = open(test_suits_folder_path + "/test_task.json", 'r').read()
+        >>> storage_obj = simplejson.loads(data_str)
         >>> b = Task.from_json(storage_obj)
         >>> a.__eq__(b)
         True
@@ -96,9 +98,10 @@ class Task:
         :param date_start: start date of new Task
         :param duration: duration of new Task
         :return: created Task entity
-        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
-        >>>b = Task.create(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), 10)
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 2, 12), False)
+        >>> b = Task.create(1, "name1", "descr1", "2012-02-02 02:02:02", 10)
         >>> a.__eq__(b)
+        True
         """
         return cls(task_id, name, description, parser.parse(date_start),
                    parser.parse(date_start) + timedelta(seconds=duration), False)
@@ -144,7 +147,6 @@ class Task:
         >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
         >>> a.make_completed()
         >>> a.is_completed = True
-        True
         """
         self.is_completed = True
 
@@ -156,6 +158,5 @@ class Task:
         >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), True)
         >>> a.make_uncompleted()
         >>> a.is_completed = False
-        True
         """
         self.is_completed = False

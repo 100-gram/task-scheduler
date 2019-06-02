@@ -1,5 +1,5 @@
 from model.task import Task
-from config.config import storage_path
+from config.config import storage_path, test_suits_folder_path
 from model.task_status import TaskStatus
 from model.response import Response
 from dateutil import parser
@@ -31,9 +31,8 @@ class DataManager:
         JSON serialization for DataManager object
 
         :return: dict with all inner fields
-        >>> file_path = "./../tests"
-        >>> a = DataManager.load_from_file(file_path + "/test_suit1.json")
-        >>> a.__json__().__str__() == open(file_path + "/test_suit1.txt", 'r').read()
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
+        >>> a.__json__().__str__() == open(test_suits_folder_path + "/test_suit1.txt", 'r').read()
         True
         """
         return {
@@ -50,7 +49,7 @@ class DataManager:
 
         :param json_obj: JSON object (dict)
         :return: instance of DataManager
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> b = DataManager.from_json(a.__json__())
         >>> b.next_id
         2
@@ -66,8 +65,7 @@ class DataManager:
 
         :param storage_obj: JSON serialized Tasks
         :return: list of Task entities
-        >>> file_path = "./../tests"
-        >>> data_str = open(file_path + "/test_suit1.json", 'r').read()
+        >>> data_str = open(test_suits_folder_path + "/test_suit1.json", 'r').read()
         >>> storage_obj = simplejson.loads(data_str)['tasks']
         >>> a = DataManager.tasks_from_json(storage_obj)[0].__json__()
         >>> a['name']
@@ -103,7 +101,7 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return: instance of DataManager
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> a.next_id
         2
         >>> a.tasks.__len__()
@@ -121,7 +119,7 @@ class DataManager:
 
         :param file_path: file path to json file
         :return: None
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> prev = a.storage_path
         >>> a.set_storage_path("/path")
         >>> a.storage_path == "/path" and a.storage_path != prev
@@ -135,10 +133,10 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return: None
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
-        >>> a.save_to_file("./../tests/test_suit2.json")
-        >>> b = open("./../tests/test_suit1.json", 'r').read()
-        >>> c = open("./../tests/test_suit2.json", 'r').read()
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
+        >>> a.save_to_file(test_suits_folder_path + "/test_suit2.json")
+        >>> b = open(test_suits_folder_path + "/test_suit1.json", 'r').read()
+        >>> c = open(test_suits_folder_path + "/test_suit2.json", 'r').read()
         >>> b == c
         True
         """
@@ -151,19 +149,19 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return: None
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
-        >>> a.save_to_file("./../tests/test_suit2.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
+        >>> a.save_to_file(test_suits_folder_path + "/test_suit2.json")
         >>> a.change_task_status(1, False)
         True
-        >>> b = DataManager.load_from_file("./../tests/test_suit2.json")
+        >>> b = DataManager.load_from_file(test_suits_folder_path + "/test_suit2.json")
         >>> a.tasks[0] != b.tasks[0]
         True
-        >>> a.update_from_file("./../tests/test_suit2.json")
+        >>> a.update_from_file(test_suits_folder_path + "/test_suit2.json")
         >>> a.tasks[0] == b.tasks[0]
         True
         >>> a.change_task_status(1, True)
         True
-        >>> a.save_to_file("./../tests/test_suit1.json")
+        >>> a.save_to_file(test_suits_folder_path + "/test_suit1.json")
         """
         data_str = open(file_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
@@ -178,7 +176,7 @@ class DataManager:
         :param limit: count of tasks in page
         :param query: search parameter
         :return: list of Task entities
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> f = a.get_all().tasks
         >>> task = Task(1, "Name", "nothing", parser.parse("1999-08-28T21:03:05"), \
             parser.parse("1999-08-28T05:55:23"), True)
@@ -199,7 +197,7 @@ class DataManager:
         :param limit: count of tasks in page
         :param query: search parameter
         :return: list of Task entities
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> a.get_with_status(status=TaskStatus.UNCOMPLETED).tasks
         []
         >>> a.get_with_status(status=TaskStatus.COMPLETED).tasks.__len__()
@@ -222,7 +220,7 @@ class DataManager:
 
         :param task_id: id of searched Task
         :return: Task entity if task with selected id exists else False
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> task = Task(1, "Name", "nothing", parser.parse("1999-08-28T21:03:05"), \
             parser.parse("1999-08-28T05:55:23"), True)
         >>> a.get_by_id(1) == task
@@ -243,7 +241,7 @@ class DataManager:
         :param task_id: id of updating Task
         :param new_task: Task entity with updating info
         :return: True if entity was updated else
-        >>> a = DataManager.load_from_file("./../tests/test_suit3.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit3.json")
         >>> task = Task(1, "TEST val", "nothing", parser.parse("1999-08-28T21:03:05"), \
             parser.parse("1999-08-28T05:55:23"), True)
         >>> a.update_task(1, task)
@@ -272,7 +270,7 @@ class DataManager:
         :param task_id: id of updating Task
         :param is_completed: Task status
         :return:True if entity was updated else False
-        >>> a = DataManager.load_from_file("./../tests/test_suit3.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit3.json")
         >>> a.change_task_status(1, False)
         True
         >>> a.get_by_id(1).completed()
@@ -281,6 +279,8 @@ class DataManager:
         True
         >>> a.get_by_id(1).completed()
         True
+        >>> a.change_task_status(-23, True)
+        False
         """
         self.update_from_file(self.storage_path)
         for i, task in enumerate(self.tasks):
@@ -300,7 +300,7 @@ class DataManager:
         :param date_start: updated start date of Task
         :param duration: updated duration of Task
         :return: True if entity was updated else False
-        >>> a = DataManager.load_from_file("./../tests/test_suit4.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit4.json")
         >>> temp = a.get_by_id(1)
         >>> a.update_task_info(1, "tEsT", "-.-", "2018", 3600)
         True
@@ -310,6 +310,10 @@ class DataManager:
         True
         >>> a.update_task(1, temp)
         True
+        >>> a.update_task(144, temp)
+        False
+        >>> a.update_task_info(-1, "tEsT", "-.-", "2018", 3600)
+        False
         """
         self.update_from_file(self.storage_path)
         for i, task in enumerate(self.tasks):
@@ -328,13 +332,13 @@ class DataManager:
 
         :param task_id: id of deleted Task
         :return: True if entity was deleted else False
-        >>> a = DataManager.load_from_file("./../tests/test_suit4.json")
-        >>> temp = open("./../tests/test_suit4.json", 'r').read()
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit4.json")
+        >>> temp = open(test_suits_folder_path + "/test_suit4.json", 'r').read()
         >>> a.delete_task(2)
         False
         >>> a.delete_task(1)
         True
-        >>> file = open("./../tests/test_suit4.json", "w")
+        >>> file = open(test_suits_folder_path + "/test_suit4.json", "w")
         >>> file.write(temp)
         281
         >>> file.close()
@@ -351,7 +355,7 @@ class DataManager:
 
         :param task: new Task entity
         :return: added Task entity
-        >>> a = DataManager.load_from_file("./../tests/test_suit5.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit5.json")
         >>> task = Task(1, "quest", "desc", parser.parse("2018"), parser.parse("2019"), False)
         >>> a.add_task(task) == task
         True
@@ -372,7 +376,7 @@ class DataManager:
         :param date_start: start date of new Task
         :param duration: duration of new Task
         :return: created Task entity
-        >>> a = DataManager.load_from_file("./../tests/test_suit5.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit5.json")
         >>> task = Task(1, "quest", "desc", parser.parse("2018"), parser.parse("2018-06-03T00:00:34"), False)
         >>> b = a.create_task("quest", "desc", "2018", 34)
         >>> task.task_id = a.next_id - 1
@@ -416,7 +420,7 @@ class DataManager:
         :param array: list of Tasks
         :param query: searched parameter
         :return: list of Tasks that consist searched parameter
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> DataManager.__search_filter__(a.tasks).__len__()
         1
         >>> DataManager.__search_filter__(a.tasks, query="Just").__len__()
@@ -441,7 +445,7 @@ class DataManager:
         :param query: searched parameter
         :param status_filter: searched Task status
         :return: paginated list of Tasks that consist searched parameter
-        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a = DataManager.load_from_file(test_suits_folder_path + "/test_suit1.json")
         >>> DataManager.__paginate_and_search__(a.tasks).tasks.__len__()
         1
         >>> DataManager.__paginate_and_search__(a.tasks, offset=3).tasks.__len__()
