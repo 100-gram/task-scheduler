@@ -14,11 +14,21 @@ Just calling needed method in run_job function
 
 class Server(Flask):
     def __init__(self, *args, **kwargs):
+        """
+        Constructor for Server
+        :param args: arguments
+        :param kwargs: arguments with keys
+        """
         super(Server, self).__init__(*args, **kwargs)
         self._activate_background_job()
 
     @staticmethod
     def _activate_background_job():
+        """
+        Start Console interface in other thread
+
+        :return:None
+        """
         def run_job():
             time.sleep(1)
             console_interface = ConsoleInterface()

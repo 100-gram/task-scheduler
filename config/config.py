@@ -81,11 +81,21 @@ def task_params_from_request():
 
 
 def check_task_entity(task):
+    """
+    Check properties of Task object
+
+    :param task: Task object
+    :return: True if object is valid else False
+    """
     return task.name and isinstance(task.name, str) and task.description and isinstance(task.description, str) \
            and task.date_start and isinstance(task.date_start, str) and task.duration \
            and isinstance(task.duration, int)
 
 
-def check_pagination_params():
+def check_task_params():
+    """
+    Check existing of Task properties in request object
+    :return: True if object contains all needed data else False
+    """
     return not request.json or 'name' not in request.json or 'description' not in request.json \
            or 'date_start' not in request.json or 'duration' not in request.json

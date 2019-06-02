@@ -132,7 +132,7 @@ class DataManager:
 
     def update_task(self, task_id: int, new_task: Task):
         """
-        Update Task dy id
+        Update Task by id
         :param task_id: id of updating Task
         :param new_task: Task entity with updating info
         :return: True if entity was updated else False
@@ -189,7 +189,7 @@ class DataManager:
         Delete Task
 
         :param task_id: id of deleted Task
-        :return: rue if entity was deleted else False
+        :return: True if entity was deleted else False
         """
         self.update_from_file()
         length = self.tasks.__len__()
