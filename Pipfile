@@ -19,6 +19,7 @@ pytest = "*"
 termcolor = "*"
 docutils = "*"
 sphinx = "*"
+jsonpickle = "*"
 
 [requires]
 python_version = "3.6"
