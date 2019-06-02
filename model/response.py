@@ -6,6 +6,7 @@ Wrapper for pagination Response
 Provide all methods to manage Response
 """
 
+
 class Response:
     def __init__(self, tasks: [Task], offset: int, limit: int, query: str, count_all: int, status_filter=None):
         """

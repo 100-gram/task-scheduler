@@ -1,6 +1,7 @@
 from os import path, system, name
 from sys import modules
 from flask import request, Response
+from flask_restful import reqparse
 import simplejson
 
 """
@@ -11,8 +12,8 @@ Here provided path to storage file and some others helper functions
 
 app_path = path.dirname(modules['__main__'].__file__)
 
-storage_path = "/home/a_krava/projects/github/task-scheduler/data/tasks.json"
-# storage_path = path.join(app_path, 'data', 'tasks.json')
+# storage_path = "/home/a_krava/projects/github/task-scheduler/data/tasks.json"
+storage_path = path.join(app_path, 'data', 'tasks.json')
 
 
 def clear():
@@ -51,51 +52,19 @@ def json_response(data, status=200):
     return Response(json, status=status, mimetype='application/json')
 
 
-def query_pagination_params():
-    """
-    Make dict with requests params, which are used for pagination and filtering
-
-    :return: dict. Here offset is int (by default 0); limit is int (by default None); query is str
-    """
-    offset = request.args.get('offset')
-    limit = request.args.get('limit')
-    return {
-        'offset': int(offset) if offset is not None and offset.isdigit() else 0,
-        'limit': int(limit) if limit is not None and limit.isdigit() else None,
-        'query': request.args.get('query')
-    }
+def task_params_parser():
+    parser = reqparse.RequestParser()
+    parser.add_argument('name', type=str, location='json', required=True)
+    parser.add_argument('description', type=str, location='json', required=True)
+    parser.add_argument('date_start', type=str, location='json', required=True)
+    parser.add_argument('duration', type=int, location='json', required=True)
+    return parser
 
 
-def task_params_from_request():
-    """
-    Make dict with requests params of Task entity
-
-    :return: dict. all information about task
-    """
-    return {
-        'name': request.json['name'],
-        'description': request.json['description'],
-        'date_start': request.json['date_start'],
-        'duration': request.json['duration']
-    }
-
-
-def check_task_entity(task):
-    """
-    Check properties of Task object
-
-    :param task: Task object
-    :return: True if object is valid else False
-    """
-    return task.name and isinstance(task.name, str) and task.description and isinstance(task.description, str) \
-           and task.date_start and isinstance(task.date_start, str) and task.duration \
-           and isinstance(task.duration, int)
-
-
-def check_task_params():
-    """
-    Check existing of Task properties in request object
-    :return: True if object contains all needed data else False
-    """
-    return not request.json or 'name' not in request.json or 'description' not in request.json \
-           or 'date_start' not in request.json or 'duration' not in request.json
+def query_pagination_params_parser():
+    parser = reqparse.RequestParser()
+    parser.add_argument('offset', type=int, location='json')
+    parser.add_argument('limit', type=int, location='json')
+    parser.add_argument('query', type=str, location='json')
+    parser.add_argument('status', dest='tasks_status', type=str, location='json')
+    return parser

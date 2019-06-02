@@ -1,6 +1,6 @@
 from flask import Flask
 from view.interface import ConsoleInterface
-from config.config import clear, shutdown_server
+from config.config import shutdown_server
 import threading
 import time
 
@@ -20,7 +20,7 @@ class Server(Flask):
         :param kwargs: arguments with keys
         """
         super(Server, self).__init__(*args, **kwargs)
-        self._activate_background_job()
+        # self._activate_background_job()
 
     @staticmethod
     def _activate_background_job():
