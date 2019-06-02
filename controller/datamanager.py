@@ -20,7 +20,7 @@ class DataManager:
         Constructor for DataManager object
 
         :param next_id: id of task, that will be created next
-        :param tasks: list of Task entities
+        :param tasks: list of Task entity;
         """
         self.next_id = next_id
         self.tasks = tasks

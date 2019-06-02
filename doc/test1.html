@@ -387,7 +387,7 @@ Constructor for DataManager object</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">param next_id:</th><td class="field-body">id of task, that will be created next</td>
 </tr>
-<tr class="field"><th class="field-name">param tasks:</th><td class="field-body">list of Task entities</td>
+<tr class="field"><th class="field-name">param tasks:</th><td class="field-body">list of Task entity;</td>
 </tr>
 </tbody>
 </table>
@@ -484,42 +484,57 @@ Unexpected indentation.</div>
 <blockquote>
 <p>&quot;&quot;&quot;
 Create DataManager instance from file with JSON data</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">return:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 68)</p>
-Field list ends without a blank line; unexpected unindent.</div>
-<p>&quot;&quot;&quot;
+<p>:return:instance of DataManager
+&quot;&quot;&quot;
 data_str = open(storage_path, 'r').read()
 storage_obj = simplejson.loads(data_str)
 return DataManager.from_json(storage_obj)</p>
 </blockquote>
 <dl class="docutils">
 <dt>def save_to_file(self):</dt>
-<dd><dl class="first last docutils">
-<dt>with open(storage_path, 'w') as outfile:</dt>
-<dd>simplejson.dump(self, outfile, indent=4, for_json=True)</dd>
-</dl>
+<dd><p class="first">&quot;&quot;&quot;
+Save changes( tasks ans next_id) in data file
+:return: None
+&quot;&quot;&quot;
+with open(storage_path, 'w') as outfile:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 78)</p>
+Unexpected indentation.</div>
+<blockquote class="last">
+simplejson.dump(self, outfile, indent=4, for_json=True)</blockquote>
 </dd>
 <dt>def update_from_file(self):</dt>
-<dd>data_str = open(storage_path, 'r').read()
+<dd>&quot;&quot;&quot;
+Get changes( tasks ans next_id) from data file
+:return: None
+&quot;&quot;&quot;
+data_str = open(storage_path, 'r').read()
 storage_obj = simplejson.loads(data_str)
 self.next_id = storage_obj['next_id']
 self.tasks = DataManager.tasks_from_json(storage_obj['tasks'])</dd>
 <dt>def get_all(self, offset=0, limit=None, query=None):</dt>
-<dd>self.update_from_file()
+<dd>&quot;&quot;&quot;
+Get all filtered and paginated tasks
+:param offset: count of skipping tasks
+:param limit: count of tasks in page
+:param query: search parameter
+:return: list of Task entities
+&quot;&quot;&quot;
+self.update_from_file()
 return DataManager.__paginate_and_search(self.tasks, offset, limit, query)</dd>
 <dt>def get_with_status(self, status: TaskStatus, offset=0, limit=None, query=None):</dt>
-<dd><p class="first">self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Get all filtered and paginated tasks with selected status
+:param status: selected status of Task
+:param offset: count of skipping tasks
+:param limit: count of tasks in page
+:param query: search parameter
+:return: list of Task entities
+&quot;&quot;&quot;
+self.update_from_file()
 filter_function = {</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 90)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 112)</p>
 Unexpected indentation.</div>
 <blockquote>
 TaskStatus.COMPLETED: lambda x: x.completed(),
@@ -528,17 +543,22 @@ TaskStatus.PLANNED: lambda x: not x.is_finished() and not x.is_running(),
 TaskStatus.RUNNING: lambda x: x.is_running(),
 TaskStatus.FINISHED: lambda x: x.is_finished(),</blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 95)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 117)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p class="last">}[status]
 result = list(filter(filter_function, self.tasks))
 return DataManager.__paginate_and_search(result, offset, limit, query, status)</p>
 </dd>
 <dt>def get_by_id(self, task_id: int):</dt>
-<dd><p class="first">self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Get Task entity with selected id
+:param task_id: id of searched Task
+:return: Task entity if task with selected id exists else False
+&quot;&quot;&quot;
+self.update_from_file()
 for i, task in enumerate(self.tasks):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 102)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 129)</p>
 Unexpected indentation.</div>
 <blockquote>
 <dl class="docutils">
@@ -547,16 +567,22 @@ Unexpected indentation.</div>
 </dl>
 </blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 104)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 131)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p class="last">return False</p>
 </dd>
 <dt>def update_task(self, task_id: int, new_task: Task):</dt>
-<dd><p class="first">self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Update Task dy id
+:param task_id: id of updating Task
+:param new_task: Task entity with updating info
+:return: True if entity was updated else False
+&quot;&quot;&quot;
+self.update_from_file()
 new_task.task_id = task_id
 for i, task in enumerate(self.tasks):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 110)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 143)</p>
 Unexpected indentation.</div>
 <blockquote>
 <dl class="docutils">
@@ -567,15 +593,33 @@ return True</dd>
 </dl>
 </blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 114)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 147)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p class="last">return False</p>
 </dd>
 <dt>def change_task_status(self, task_id: int, is_completed: bool):</dt>
-<dd><p class="first">self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Change Task status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param task_id:</th><td class="field-body">id of updating Task</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param is_completed:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">Task status</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 155)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p>:return:True if entity was updated else False
+&quot;&quot;&quot;
+self.update_from_file()
 for i, task in enumerate(self.tasks):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 119)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 159)</p>
 Unexpected indentation.</div>
 <blockquote>
 <dl class="docutils">
@@ -586,15 +630,41 @@ return True</dd>
 </dl>
 </blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 123)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 163)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p class="last">return False</p>
 </dd>
 <dt>def update_task_info(self, task_id: int, name: str, description: str, date_start: str, duration: int):</dt>
-<dd><p class="first">self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Update Task info</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param task_id:</th><td class="field-body">id of updating Task</td>
+</tr>
+<tr class="field"><th class="field-name">param name:</th><td class="field-body">updated name of Task</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param description:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">updated description of Task</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param date_start:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">updated start date of Task</td>
+</tr>
+<tr class="field"><th class="field-name">param duration:</th><td class="field-body">updated duration of Task</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">True if entity was updated else False</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 175)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p>&quot;&quot;&quot;
+self.update_from_file()
 for i, task in enumerate(self.tasks):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 128)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 178)</p>
 Unexpected indentation.</div>
 <blockquote>
 <dl class="docutils">
@@ -608,73 +678,198 @@ return True</dd>
 </dl>
 </blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 135)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 185)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p class="last">return False</p>
 </dd>
 <dt>def delete_task(self, task_id: int):</dt>
-<dd>self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Delete Task</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param task_id:</th><td class="field-body">id of deleted Task</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">rue if entity was deleted else False</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 193)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p class="last">&quot;&quot;&quot;
+self.update_from_file()
 length = self.tasks.__len__()
 self.tasks = list(filter(lambda task: task.task_id != task_id, self.tasks))
 self.save_to_file()
-return length != self.tasks.__len__()</dd>
+return length != self.tasks.__len__()</p>
+</dd>
 <dt>def add_task(self, task: Task):</dt>
-<dd>self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Add new Task to storage</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param task:</th><td class="field-body">new Task entity</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">added Task entity</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 206)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p class="last">&quot;&quot;&quot;
+self.update_from_file()
 task.task_id = self.next_id
 self.tasks.append(task)
 self.next_id += 1
 self.save_to_file()
-return task</dd>
+return task</p>
+</dd>
 <dt>def create_task(self, name: str, description: str, date_start: str, duration: int):</dt>
-<dd>self.update_from_file()
+<dd><p class="first">&quot;&quot;&quot;
+Create new Task</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param name:</th><td class="field-body">name of new Task</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param description:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">description of new Task</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param date_start:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">start date of new Task</td>
+</tr>
+<tr class="field"><th class="field-name">param duration:</th><td class="field-body">duration of new Task</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">created Task entity</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 223)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p class="last">&quot;&quot;&quot;
+self.update_from_file()
 task = Task.create(self.next_id, name, description, date_start, duration)
 self.tasks.append(task)
 self.next_id += 1
 self.save_to_file()
-return task</dd>
+return task</p>
+</dd>
 </dl>
 <p>&#64;staticmethod
 def __paginate_array(array, offset=0, limit=None):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 162)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 233)</p>
 Unexpected indentation.</div>
 <blockquote>
-<dl class="docutils">
-<dt>if isinstance(offset, int) and offset &gt;= 0 and ((isinstance(limit, int) and limit &gt; 0) or limit is None):</dt>
-<dd>return array[offset:(limit + offset if limit is not None else None)]</dd>
-</dl>
+<p>&quot;&quot;&quot;
+Paginate list of Tasks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param array:</th><td class="field-body">list of Tasks</td>
+</tr>
+<tr class="field"><th class="field-name">param offset:</th><td class="field-body">count of skipping tasks</td>
+</tr>
+<tr class="field"><th class="field-name">param limit:</th><td class="field-body">count of Tasks in page</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">paginated list of Tasks</td>
+</tr>
+</tbody>
+</table>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 164)</p>
-Definition list ends without a blank line; unexpected unindent.</div>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 240)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p>&quot;&quot;&quot;
+if isinstance(offset, int) and offset &gt;= 0 and ((isinstance(limit, int) and limit &gt; 0) or limit is None):</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 242)</p>
+Unexpected indentation.</div>
+<blockquote>
+return array[offset:(limit + offset if limit is not None else None)]</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 243)</p>
+Block quote ends without a blank line; unexpected unindent.</div>
 <p>return array</p>
 </blockquote>
 <p>&#64;staticmethod
 def __search_filter(array: [Task], query=None):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 168)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 247)</p>
 Unexpected indentation.</div>
 <blockquote>
-<p>length = array.__len__()
+<p>&quot;&quot;&quot;
+Search Tasks in list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param array:</th><td class="field-body">list of Tasks</td>
+</tr>
+<tr class="field"><th class="field-name">param query:</th><td class="field-body">searched parameter</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">list of Tasks that consist searched parameter</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 253)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p>&quot;&quot;&quot;
+length = array.__len__()
 if not isinstance(query, str) or query.__len__() == 0:</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 170)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 256)</p>
 Unexpected indentation.</div>
 <blockquote>
 return array, length</blockquote>
 <div class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 171)</p>
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 257)</p>
 Block quote ends without a blank line; unexpected unindent.</div>
 <p>return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array)), length</p>
 </blockquote>
 <p>&#64;staticmethod
 def __paginate_and_search(array, offset=0, limit=None, query=None, status_filter=None):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 175)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 261)</p>
 Unexpected indentation.</div>
 <blockquote class="last">
+<p>&quot;&quot;&quot;
+Paginate list of Tasks and Search Tasks in it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">param array:</th><td class="field-body">list of Tasks</td>
+</tr>
+<tr class="field"><th class="field-name">param offset:</th><td class="field-body">count of skipping tasks</td>
+</tr>
+<tr class="field"><th class="field-name">param limit:</th><td class="field-body">count of Tasks in page</td>
+</tr>
+<tr class="field"><th class="field-name">param query:</th><td class="field-body">searched parameter</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">param status_filter:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">searched Task status</td>
+</tr>
+<tr class="field"><th class="field-name">return:</th><td class="field-body">paginated list of Tasks that consist searched parameter</td>
+</tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">C:\Users\Oleksiy\PycharmProjects\task-scheduler\controller\datamanager.py</tt>, line 270)</p>
+Field list ends without a blank line; unexpected unindent.</div>
+<p>&quot;&quot;&quot;
 filtered, length = DataManager.__search_filter(array, query)
 tasks_result = DataManager.__paginate_array(filtered, offset, limit)
-return Response(tasks_result, offset, limit, query, length, status_filter)</blockquote>
+return Response(tasks_result, offset, limit, query, length, status_filter)</p>
+</blockquote>
 </dd>
 </dl>
 </div>
