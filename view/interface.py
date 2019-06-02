@@ -1,4 +1,3 @@
-from prompt_toolkit import prompt
 import sys
 import math
 from controller.datamanager import DataManager
@@ -26,14 +25,13 @@ class ConsoleInterface:
         input_is_correct = True
         while True:
             clear()
-            if input_is_correct:
-                print("Main menu:\n1.All tasks\n2.Not completed tasks\n3.Completed tasks\n4.New task\n5.Exit")
-            else:
+            print("Main menu:\n1.All tasks\n2.Not completed tasks\n3.Completed tasks\n4.New task\n5.Exit")
+            if input_is_correct is False:
                 print("Your input was not correct, try again")
-            answer = prompt('Enter your variant: ')
+            answer = input('Enter your variant: ')
             input_is_correct = self.__main_menu_redirect(answer)
 
-    def __main_menu_redirect(self, value: int) -> bool:
+    def __main_menu_redirect(self, value) -> bool:
         if value == '1':
             self.__tasks_menu(TaskMenuType.ALL)
         elif value == '2':
@@ -56,7 +54,7 @@ class ConsoleInterface:
         print("Tasks menu:\n1.Select page\n2.Search by name\n3.Select by id\n4.Exit to main menu")
         input_is_correct = False
         while not input_is_correct:
-            answer = prompt('Enter your variant: ')
+            answer = input('Enter your variant: ')
             input_is_correct = self.__tasks_menu_redirect(answer, task_menu_type, all_pages, search_query)
             if not input_is_correct:
                 print("Your input was not correct, try again")
@@ -90,12 +88,10 @@ class ConsoleInterface:
 
     @staticmethod
     def __choose_color(task: Task):
-        if task.is_running():
+        if task.is_completed is True:
             return "green"
-        elif task.is_finished():
-            return "red"
         else:
-            return "yellow"
+            return "red"
 
     def __get_tasks(self, task_menu_type, search_query, page):
         offset = (page - 1) * TASKS_ON_PAGE
@@ -123,14 +119,14 @@ class ConsoleInterface:
         input_is_correct = False
         page = None
         while not input_is_correct:
-            page = prompt("Enter your page: ")
+            page = input("Enter your page: ")
             input_is_correct = ConsoleInterface.__number_is_valid(page) and all_pages >= int(page) > 0
             if not input_is_correct:
                 print("Your page is not correct, try again")
         self.__tasks_menu(menu_type, search_query, int(page))
 
     def __tasks_menu_change_query(self, menu_type):
-        query = prompt("Enter your query: ")
+        query = input("Enter your query: ")
         if len(query) > 0:
             self.__tasks_menu(menu_type, query)
 
@@ -138,7 +134,7 @@ class ConsoleInterface:
         input_is_correct = False
         task_id = None
         while not input_is_correct:
-            task_id = prompt("Enter id: ")
+            task_id = input("Enter id: ")
             input_is_correct = ConsoleInterface.__number_is_valid(task_id)
             if not input_is_correct:
                 print("Your id is not correct, try again")
@@ -152,7 +148,7 @@ class ConsoleInterface:
         print("Task menu:\n1.Change task\n2.Set completed/uncompleted\n3.Delete task\n4.Exit to main menu")
         input_is_correct = False
         while not input_is_correct:
-            answer = prompt('Enter your variant: ')
+            answer = input('Enter your variant: ')
             input_is_correct = self.__task_menu_redirect(answer, task)
             if not input_is_correct:
                 print("Your input was not correct, try again")
@@ -174,10 +170,10 @@ class ConsoleInterface:
         input_is_correct = False
         while not input_is_correct:
             print("Enter values for task:")
-            name = prompt('Enter the name: ')
-            description = prompt('Enter the description: ')
-            date = prompt('Enter the date of beginning: ')
-            duration = prompt('Enter the duration (hh:mm:ss): ')
+            name = input('Enter the name: ')
+            description = input('Enter the description: ')
+            date = input('Enter the date of beginning: ')
+            duration = input('Enter the duration (hh:mm:ss): ')
             input_is_correct = self.__try_to_add_or_change_task(name, description, date, duration, task)
             if not input_is_correct:
                 print("Your input was not valid, try again")
@@ -198,17 +194,16 @@ class ConsoleInterface:
         print("Is completed: %s" % task.is_completed)
 
     def __try_to_add_or_change_task(self, name, description, date, duration, task):
-        h, m, s = duration.split(':')
-        if(not ConsoleInterface.__number_is_valid(h) or
-            not ConsoleInterface.__number_is_valid(m) or
-                not ConsoleInterface.__number_is_valid(s)):
+        try:
+            h, m, s = duration.split(':')
+            seconds_duration = (int(datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s)).total_seconds()))
+            if task is not None:
+                self.data_manager.update_task_info(task.task_id, name, description, date, seconds_duration)
+            else:
+                self.data_manager.create_task(name, description, date, seconds_duration)
+            return True
+        except Exception as e:
             return False
-        seconds_duration = (int(datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s)).total_seconds()))
-        if task is not None:
-            self.data_manager.update_task_info(task.task_id, name, description, date, seconds_duration)
-        else:
-            self.data_manager.create_task(name, description, date, seconds_duration)
-        return True
 
     @staticmethod
     def __exit():
