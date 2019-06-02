@@ -41,7 +41,7 @@ class Task(Resource):
         """
         Api Method Path('/tasks/<int:task_id>'), method 'PUT'
         Update Task by id
-        
+
         Use params:
         - name: name of updating Task
         - description: description of updating Task
