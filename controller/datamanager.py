@@ -102,13 +102,18 @@ class DataManager:
         Create DataManager instance from file with JSON data
 
         :param file_path: set explicitly file path of data storage
-        :return:instance of DataManager
-        >>> DataManager.load_from_file("./../tests/test_suit1.json")
+        :return: instance of DataManager
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a.next_id
+        2
+        >>> a.tasks.__len__()
+        1
         """
-
         data_str = open(file_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
-        return DataManager.from_json(storage_obj)
+        instance = DataManager.from_json(storage_obj)
+        instance.storage_path = file_path
+        return instance
 
     def set_storage_path(self, file_path: str):
         """
@@ -116,6 +121,11 @@ class DataManager:
 
         :param file_path: file path to json file
         :return: None
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> prev = a.storage_path
+        >>> a.set_storage_path("/path")
+        >>> a.storage_path == "/path" and a.storage_path != prev
+        True
         """
         self.storage_path = file_path
 
@@ -125,6 +135,12 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return: None
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a.save_to_file("./../tests/test_suit2.json")
+        >>> b = open("./../tests/test_suit1.json", 'r').read()
+        >>> c = open("./../tests/test_suit2.json", 'r').read()
+        >>> b == c
+        True
         """
         with open(file_path, 'w') as outfile:
             simplejson.dump(self, outfile, indent=4, for_json=True)
@@ -135,6 +151,19 @@ class DataManager:
 
         :param file_path: set explicitly file path of data storage
         :return: None
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a.save_to_file("./../tests/test_suit2.json")
+        >>> a.change_task_status(1, False)
+        True
+        >>> b = DataManager.load_from_file("./../tests/test_suit2.json")
+        >>> a.tasks[0] != b.tasks[0]
+        True
+        >>> a.update_from_file("./../tests/test_suit2.json")
+        >>> a.tasks[0] == b.tasks[0]
+        True
+        >>> a.change_task_status(1, True)
+        True
+        >>> a.save_to_file("./../tests/test_suit1.json")
         """
         data_str = open(file_path, 'r').read()
         storage_obj = simplejson.loads(data_str)
@@ -149,6 +178,14 @@ class DataManager:
         :param limit: count of tasks in page
         :param query: search parameter
         :return: list of Task entities
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> f = a.get_all().tasks
+        >>> task = Task(1, "Name", "nothing", parser.parse("1999-08-28T21:03:05"), \
+            parser.parse("1999-08-28T05:55:23"), True)
+        >>> f[0] == task
+        True
+        >>> a.get_all(offset=1).tasks.__len__()
+        0
         """
         self.update_from_file(self.storage_path)
         return DataManager.__paginate_and_search__(self.tasks, offset, limit, query)
@@ -162,6 +199,11 @@ class DataManager:
         :param limit: count of tasks in page
         :param query: search parameter
         :return: list of Task entities
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> a.get_with_status(status=TaskStatus.UNCOMPLETED).tasks
+        []
+        >>> a.get_with_status(status=TaskStatus.COMPLETED).tasks.__len__()
+        1
         """
         self.update_from_file(self.storage_path)
         filter_function = {
@@ -180,6 +222,13 @@ class DataManager:
 
         :param task_id: id of searched Task
         :return: Task entity if task with selected id exists else False
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> task = Task(1, "Name", "nothing", parser.parse("1999-08-28T21:03:05"), \
+            parser.parse("1999-08-28T05:55:23"), True)
+        >>> a.get_by_id(1) == task
+        True
+        >>> a.get_by_id(-1)
+        False
         """
         self.update_from_file(self.storage_path)
         for i, task in enumerate(self.tasks):
@@ -193,7 +242,19 @@ class DataManager:
 
         :param task_id: id of updating Task
         :param new_task: Task entity with updating info
-        :return: True if entity was updated else False
+        :return: True if entity was updated else
+        >>> a = DataManager.load_from_file("./../tests/test_suit3.json")
+        >>> task = Task(1, "TEST val", "nothing", parser.parse("1999-08-28T21:03:05"), \
+            parser.parse("1999-08-28T05:55:23"), True)
+        >>> a.update_task(1, task)
+        True
+        >>> a.get_by_id(1) == task
+        True
+        >>> task.name = "TEst N2"
+        >>> a.update_task(1, task)
+        True
+        >>> a.get_by_id(1) == task
+        True
         """
         self.update_from_file(self.storage_path)
         new_task.task_id = task_id
@@ -211,6 +272,15 @@ class DataManager:
         :param task_id: id of updating Task
         :param is_completed: Task status
         :return:True if entity was updated else False
+        >>> a = DataManager.load_from_file("./../tests/test_suit3.json")
+        >>> a.change_task_status(1, False)
+        True
+        >>> a.get_by_id(1).completed()
+        False
+        >>> a.change_task_status(1, True)
+        True
+        >>> a.get_by_id(1).completed()
+        True
         """
         self.update_from_file(self.storage_path)
         for i, task in enumerate(self.tasks):
@@ -230,6 +300,16 @@ class DataManager:
         :param date_start: updated start date of Task
         :param duration: updated duration of Task
         :return: True if entity was updated else False
+        >>> a = DataManager.load_from_file("./../tests/test_suit4.json")
+        >>> temp = a.get_by_id(1)
+        >>> a.update_task_info(1, "tEsT", "-.-", "2018", 3600)
+        True
+        >>> task = Task(1, "tEsT", "-.-", parser.parse("2018-06-03T00:00:00"), \
+            parser.parse("2018-06-03T01:00:00"), True)
+        >>> a.get_by_id(1) == task
+        True
+        >>> a.update_task(1, temp)
+        True
         """
         self.update_from_file(self.storage_path)
         for i, task in enumerate(self.tasks):
@@ -248,6 +328,16 @@ class DataManager:
 
         :param task_id: id of deleted Task
         :return: True if entity was deleted else False
+        >>> a = DataManager.load_from_file("./../tests/test_suit4.json")
+        >>> temp = open("./../tests/test_suit4.json", 'r').read()
+        >>> a.delete_task(2)
+        False
+        >>> a.delete_task(1)
+        True
+        >>> file = open("./../tests/test_suit4.json", "w")
+        >>> file.write(temp)
+        281
+        >>> file.close()
         """
         self.update_from_file(self.storage_path)
         length = self.tasks.__len__()
@@ -261,6 +351,10 @@ class DataManager:
 
         :param task: new Task entity
         :return: added Task entity
+        >>> a = DataManager.load_from_file("./../tests/test_suit5.json")
+        >>> task = Task(1, "quest", "desc", parser.parse("2018"), parser.parse("2019"), False)
+        >>> a.add_task(task) == task
+        True
         """
         self.update_from_file(self.storage_path)
         task.task_id = self.next_id
@@ -278,6 +372,12 @@ class DataManager:
         :param date_start: start date of new Task
         :param duration: duration of new Task
         :return: created Task entity
+        >>> a = DataManager.load_from_file("./../tests/test_suit5.json")
+        >>> task = Task(1, "quest", "desc", parser.parse("2018"), parser.parse("2018-06-03T00:00:34"), False)
+        >>> b = a.create_task("quest", "desc", "2018", 34)
+        >>> task.task_id = a.next_id - 1
+        >>> b == task
+        True
         """
         self.update_from_file(self.storage_path)
         task = Task.create(self.next_id, name, description, date_start, duration)
@@ -295,6 +395,14 @@ class DataManager:
         :param offset: count of skipping tasks
         :param limit: count of Tasks in page
         :return: paginated list of Tasks
+        >>> print(DataManager.__paginate_array__([1,2,3,4,5]))
+        [1, 2, 3, 4, 5]
+        >>> print(DataManager.__paginate_array__([1,2,3,4,5], offset=2))
+        [3, 4, 5]
+        >>> print(DataManager.__paginate_array__([1,2,3,4,5], offset=1, limit=3))
+        [2, 3, 4]
+        >>> print(DataManager.__paginate_array__([1,2,3,4,5], offset=-5, limit=0))
+        [1, 2, 3, 4, 5]
         """
         if isinstance(offset, int) and offset >= 0 and ((isinstance(limit, int) and limit > 0) or limit is None):
             return array[offset:(limit + offset if limit is not None else None)]
@@ -308,11 +416,19 @@ class DataManager:
         :param array: list of Tasks
         :param query: searched parameter
         :return: list of Tasks that consist searched parameter
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> DataManager.__search_filter__(a.tasks).__len__()
+        1
+        >>> DataManager.__search_filter__(a.tasks, query="Just").__len__()
+        0
+        >>> DataManager.__search_filter__(a.tasks, query="Name").__len__()
+        1
+        >>> DataManager.__search_filter__(a.tasks, query="nam").__len__()
+        1
         """
-        length = array.__len__()
         if not isinstance(query, str) or query.__len__() == 0:
-            return array, length
-        return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array)), length
+            return array
+        return list(filter(lambda x: re.search(query, x.name + x.description, re.IGNORECASE), array))
 
     @staticmethod
     def __paginate_and_search__(array, offset=0, limit=None, query=None, status_filter=None):
@@ -325,7 +441,15 @@ class DataManager:
         :param query: searched parameter
         :param status_filter: searched Task status
         :return: paginated list of Tasks that consist searched parameter
+        >>> a = DataManager.load_from_file("./../tests/test_suit1.json")
+        >>> DataManager.__paginate_and_search__(a.tasks).tasks.__len__()
+        1
+        >>> DataManager.__paginate_and_search__(a.tasks, offset=3).tasks.__len__()
+        0
+        >>> DataManager.__paginate_and_search__(a.tasks, query="nothing").tasks.__len__()
+        1
         """
-        filtered, length = DataManager.__search_filter__(array, query)
+        filtered = DataManager.__search_filter__(array, query)
+        length = filtered.__len__()
         tasks_result = DataManager.__paginate_array__(filtered, offset, limit)
         return Response(tasks_result, offset, limit, query, length, status_filter)
