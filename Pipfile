@@ -17,6 +17,8 @@ pep8 = "*"
 requests = "*"
 pytest = "*"
 termcolor = "*"
+docutils = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.6"

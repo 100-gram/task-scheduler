@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module router.api</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="router.html"><font color="#ffffff">router</font></a>.api</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/a_krava/projects/github/task-scheduler/router/api.py">/home/a_krava/projects/github/task-scheduler/router/api.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-complete_task"><strong>complete_task</strong></a>(task_id)</dt><dd><tt>Api&nbsp;Method&nbsp;Path('/tasks/complete/&lt;int:task_id&gt;'),&nbsp;method&nbsp;'PATCH'<br>
+Complete&nbsp;or&nbsp;incomplete&nbsp;Task&nbsp;by&nbsp;id<br>
+&nbsp;<br>
+Use&nbsp;params:<br>
+-&nbsp;set_uncompleted:&nbsp;status&nbsp;of&nbsp;completing&nbsp;Task<br>
+&nbsp;<br>
+:param&nbsp;task_id:&nbsp;id&nbsp;of&nbsp;changed&nbsp;Task<br>
+:return:&nbsp;JSON&nbsp;Response&nbsp;with&nbsp;completed/uncompleted&nbsp;Task&nbsp;or&nbsp;error&nbsp;404&nbsp;if&nbsp;this&nbsp;task&nbsp;doesn`t&nbsp;exist</tt></dd></dl>
+ <dl><dt><a name="-index"><strong>index</strong></a>()</dt><dd><tt>Root&nbsp;handler&nbsp;for&nbsp;api&nbsp;path<br>
+&nbsp;<br>
+:return:&nbsp;JSON&nbsp;Response&nbsp;with&nbsp;information&nbsp;where&nbsp;user&nbsp;can&nbsp;find&nbsp;a&nbsp;documentation</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>api</strong> = &lt;flask.blueprints.Blueprint object&gt;<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;<br>
+<strong>storage_path</strong> = '/home/a_krava/projects/github/task-scheduler/data/tasks.json'</td></tr></table>
+</body></html>

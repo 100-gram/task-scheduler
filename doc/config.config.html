@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module config.config</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="config.html"><font color="#ffffff">config</font></a>.config</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/a_krava/projects/github/task-scheduler/config/config.py">/home/a_krava/projects/github/task-scheduler/config/config.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="posixpath.html">posixpath</a><br>
+</td><td width="25%" valign=top><a href="flask_restful.reqparse.html">flask_restful.reqparse</a><br>
+</td><td width="25%" valign=top><a href="simplejson.html">simplejson</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-clear"><strong>clear</strong></a>()</dt><dd><tt>Clear&nbsp;console&nbsp;function&nbsp;os-independent<br>
+&nbsp;<br>
+:return:&nbsp;NoneType</tt></dd></dl>
+ <dl><dt><a name="-disable_log"><strong>disable_log</strong></a>(app)</dt><dd><tt>Disable&nbsp;any&nbsp;output&nbsp;from&nbsp;Flask&nbsp;server<br>
+&nbsp;<br>
+:param&nbsp;app:&nbsp;instance&nbsp;of&nbsp;Flask&nbsp;application<br>
+:return:&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-json_response"><strong>json_response</strong></a>(data, status=200)</dt><dd><tt>Make&nbsp;flask&nbsp;response&nbsp;with&nbsp;json&nbsp;data&nbsp;and&nbsp;passed&nbsp;http&nbsp;status<br>
+&nbsp;<br>
+:param&nbsp;data:&nbsp;object&nbsp;or&nbsp;list.&nbsp;This&nbsp;data&nbsp;will&nbsp;be&nbsp;serialized&nbsp;to&nbsp;json&nbsp;string<br>
+:param&nbsp;status:&nbsp;int.&nbsp;Http&nbsp;response&nbsp;code&nbsp;status<br>
+:return:&nbsp;Response&nbsp;flask&nbsp;object,&nbsp;with&nbsp;application/json&nbsp;data</tt></dd></dl>
+ <dl><dt><a name="-query_pagination_params_parser"><strong>query_pagination_params_parser</strong></a>()</dt><dd><tt>Make&nbsp;dict&nbsp;with&nbsp;requests&nbsp;params,&nbsp;which&nbsp;are&nbsp;used&nbsp;for&nbsp;pagination&nbsp;and&nbsp;filtering<br>
+&nbsp;<br>
+:return:&nbsp;dict.&nbsp;Here&nbsp;offset&nbsp;is&nbsp;int;&nbsp;limit&nbsp;is&nbsp;int;&nbsp;query&nbsp;is&nbsp;str</tt></dd></dl>
+ <dl><dt><a name="-shutdown_server"><strong>shutdown_server</strong></a>()</dt><dd><tt>Shutdown&nbsp;flask&nbsp;server<br>
+&nbsp;<br>
+:return:&nbsp;NoneType</tt></dd></dl>
+ <dl><dt><a name="-system"><strong>system</strong></a>(command)</dt><dd><tt>Execute&nbsp;the&nbsp;command&nbsp;in&nbsp;a&nbsp;subshell.</tt></dd></dl>
+ <dl><dt><a name="-task_params_parser"><strong>task_params_parser</strong></a>()</dt><dd><tt>Make&nbsp;dict&nbsp;with&nbsp;requests&nbsp;params&nbsp;of&nbsp;Task&nbsp;entity<br>
+&nbsp;<br>
+:return:&nbsp;dict.&nbsp;all&nbsp;information&nbsp;about&nbsp;task</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>api_prefix</strong> = '/api/v1'<br>
+<strong>app_path</strong> = '/usr/local/bin'<br>
+<strong>modules</strong> = {'__future__': &lt;module '__future__' from '/usr/local/lib/python3.6/__future__.py'&gt;, '__main__': &lt;module '__main__' from '/usr/local/bin/pydoc3'&gt;, '__mp_main__': &lt;module '__main__' from '/usr/local/bin/pydoc3'&gt;, '_ast': &lt;module '_ast' (built-in)&gt;, '_asyncio': &lt;module '_asyncio' from '/usr/local/lib/python3....ynload/_asyncio.cpython-36m-x86_64-linux-gnu.so'&gt;, '_bisect': &lt;module '_bisect' from '/usr/local/lib/python3.6...dynload/_bisect.cpython-36m-x86_64-linux-gnu.so'&gt;, '_blake2': &lt;module '_blake2' from '/usr/local/lib/python3.6...dynload/_blake2.cpython-36m-x86_64-linux-gnu.so'&gt;, '_bootlocale': &lt;module '_bootlocale' from '/usr/local/lib/python3.6/_bootlocale.py'&gt;, '_bz2': &lt;module '_bz2' from '/usr/local/lib/python3.6/lib-dynload/_bz2.cpython-36m-x86_64-linux-gnu.so'&gt;, '_codecs': &lt;module '_codecs' (built-in)&gt;, ...}<br>
+<strong>name</strong> = 'posix'<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;<br>
+<strong>storage_path</strong> = '/home/a_krava/projects/github/task-scheduler/data/tasks.json'</td></tr></table>
+</body></html>

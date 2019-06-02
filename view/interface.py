@@ -4,7 +4,7 @@ import math
 from controller.datamanager import DataManager
 from enum import Enum
 from model.task_status import TaskStatus
-from config.config import clear
+from config.config import clear, storage_path
 from model.task import Task
 import datetime
 from termcolor import colored
@@ -20,7 +20,7 @@ class TaskMenuType(Enum):
 
 class ConsoleInterface:
     def __init__(self):
-        self.data_manager = DataManager.load_from_file()
+        self.data_manager = DataManager.load_from_file(storage_path)
 
     def console_init(self):
         input_is_correct = True
