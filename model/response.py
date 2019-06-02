@@ -31,6 +31,9 @@ class Response:
         JSON serialization for DataManager object
 
         :return: dict with all inner fields
+        >>> a = Response([], 5, 5, "something", 20, True)
+        >>> a.__json__().__str__() == open("./../tests/test_response.txt", 'r').read()
+        True
         """
         return {
             'tasks': self.tasks,

@@ -34,6 +34,13 @@ class Task:
 
         :param other: second Task entity
         :return: True if entity is equal else False
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
+        >>> b = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
+        >>> c = Task(2, "name2", "descr2", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
+        >>> a.__eq__(b)
+        True
+        >>>a.__eq__(c)
+        False
         """
         if not isinstance(other, Task):
             return False
@@ -46,6 +53,9 @@ class Task:
         JSON serialization for DataManager object
 
         :return: dict with all inner fields
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
+        >>> a.__json__().__str__() == open("./../tests/test_task.txt", 'r').read()
+        True
         """
         return {
             'id': self.task_id,
@@ -65,6 +75,12 @@ class Task:
 
         :param json_obj: JSON object (dict)
         :return: instance of Task
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2013, 3, 3, 3, 3, 3), True)
+        >>>data_str = open("./../tests/test_task.json", 'r').read()
+        >>>storage_obj = simplejson.loads(data_str)
+        >>> b = Task.from_json(storage_obj)
+        >>> a.__eq__(b)
+        True
         """
         return cls(json_obj['id'], json_obj['name'], json_obj['description'], parser.parse(json_obj['date_start']),
                    parser.parse(json_obj['date_end']), json_obj['is_completed'])
@@ -80,6 +96,9 @@ class Task:
         :param date_start: start date of new Task
         :param duration: duration of new Task
         :return: created Task entity
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
+        >>>b = Task.create(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), 10)
+        >>> a.__eq__(b)
         """
         return cls(task_id, name, description, parser.parse(date_start),
                    parser.parse(date_start) + timedelta(seconds=duration), False)
@@ -89,6 +108,9 @@ class Task:
         Get status of Task
 
         :return: status of Task
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
+        >>> a.completed()
+        False
         """
         return self.is_completed
 
@@ -97,6 +119,9 @@ class Task:
         Get finished status of Task
 
         :return: True if Task is finished else False
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
+        >>> a.is_finished()
+        True
         """
         return datetime.now() > self.date_end
 
@@ -105,6 +130,9 @@ class Task:
         Get running status of Task
 
         :return: True if Task is running else False
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
+        >>> a.is_running()
+        False
         """
         return self.date_start < datetime.now() < self.date_end
 
@@ -113,6 +141,10 @@ class Task:
         Complete Task
 
         :return: None
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), False)
+        >>> a.make_completed()
+        >>> a.is_completed = True
+        True
         """
         self.is_completed = True
 
@@ -120,6 +152,10 @@ class Task:
         """
         Incomplete Task
 
-        :return: None
+        :return:
+        >>> a = Task(1, "name1", "descr1", datetime(2012, 2, 2, 2, 2, 2), datetime(2012, 2, 2, 2, 12, 2), True)
+        >>> a.make_uncompleted()
+        >>> a.is_completed = False
+        True
         """
         self.is_completed = False
