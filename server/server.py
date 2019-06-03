@@ -1,8 +1,11 @@
 from flask import Flask
 from view.interface import ConsoleInterface
-from config.config import shutdown_server
 import threading
+import signal
 import time
+import sys
+import os
+
 
 """
 This server module is wrapper for base flask application.
@@ -34,7 +37,10 @@ class Server(Flask):
             time.sleep(1)
             console_interface = ConsoleInterface()
             console_interface.console_init()
-            shutdown_server()
+            os.kill(os.getpid(), signal.SIGQUIT)
 
-        t = threading.Thread(target=run_job)
-        t.start()
+        t = threading.Thread(target=run_job, daemon=True)
+        try:
+            t.start()
+        except (KeyboardInterrupt, SystemExit):
+            sys.exit()

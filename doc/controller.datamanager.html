@@ -50,18 +50,36 @@
 
 <dl><dt><a name="DataManager-__json__"><strong>__json__</strong></a>(self)</dt><dd><tt>JSON&nbsp;serialization&nbsp;for&nbsp;<a href="#DataManager">DataManager</a>&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;<br>
-:return:&nbsp;dict&nbsp;with&nbsp;all&nbsp;inner&nbsp;fields</tt></dd></dl>
+:return:&nbsp;dict&nbsp;with&nbsp;all&nbsp;inner&nbsp;fields<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-__json__">__json__</a>().<a href="#DataManager-__str__">__str__</a>()&nbsp;==&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.txt",&nbsp;'r').read()<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-add_task"><strong>add_task</strong></a>(self, task:model.task.Task)</dt><dd><tt>Add&nbsp;new&nbsp;Task&nbsp;to&nbsp;storage<br>
 &nbsp;<br>
 :param&nbsp;task:&nbsp;new&nbsp;Task&nbsp;entity<br>
-:return:&nbsp;added&nbsp;Task&nbsp;entity</tt></dd></dl>
+:return:&nbsp;added&nbsp;Task&nbsp;entity<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit5.json")<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"quest",&nbsp;"desc",&nbsp;parser.parse("2018"),&nbsp;parser.parse("2019"),&nbsp;False)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-add_task">add_task</a>(task)&nbsp;==&nbsp;task<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-change_task_status"><strong>change_task_status</strong></a>(self, task_id:int, is_completed:bool)</dt><dd><tt>Change&nbsp;Task&nbsp;status<br>
 &nbsp;<br>
 :param&nbsp;task_id:&nbsp;id&nbsp;of&nbsp;updating&nbsp;Task<br>
 :param&nbsp;is_completed:&nbsp;Task&nbsp;status<br>
-:return:True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else&nbsp;False</tt></dd></dl>
+:return:True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else&nbsp;False<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit3.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-change_task_status">change_task_status</a>(1,&nbsp;False)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1).completed()<br>
+False<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-change_task_status">change_task_status</a>(1,&nbsp;True)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1).completed()<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-change_task_status">change_task_status</a>(-23,&nbsp;True)<br>
+False</tt></dd></dl>
 
 <dl><dt><a name="DataManager-create_task"><strong>create_task</strong></a>(self, name:str, description:str, date_start:str, duration:int)</dt><dd><tt>Create&nbsp;new&nbsp;Task<br>
 &nbsp;<br>
@@ -69,12 +87,28 @@
 :param&nbsp;description:&nbsp;description&nbsp;of&nbsp;new&nbsp;Task<br>
 :param&nbsp;date_start:&nbsp;start&nbsp;date&nbsp;of&nbsp;new&nbsp;Task<br>
 :param&nbsp;duration:&nbsp;duration&nbsp;of&nbsp;new&nbsp;Task<br>
-:return:&nbsp;created&nbsp;Task&nbsp;entity</tt></dd></dl>
+:return:&nbsp;created&nbsp;Task&nbsp;entity<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit5.json")<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"quest",&nbsp;"desc",&nbsp;parser.parse("2018"),&nbsp;parser.parse("2018-06-03T00:00:34"),&nbsp;False)<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;=&nbsp;a.<a href="#DataManager-create_task">create_task</a>("quest",&nbsp;"desc",&nbsp;"2018",&nbsp;34)<br>
+&gt;&gt;&gt;&nbsp;task.task_id&nbsp;=&nbsp;a.next_id&nbsp;-&nbsp;1<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;==&nbsp;task<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-delete_task"><strong>delete_task</strong></a>(self, task_id:int)</dt><dd><tt>Delete&nbsp;Task<br>
 &nbsp;<br>
 :param&nbsp;task_id:&nbsp;id&nbsp;of&nbsp;deleted&nbsp;Task<br>
-:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;deleted&nbsp;else&nbsp;False</tt></dd></dl>
+:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;deleted&nbsp;else&nbsp;False<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit4.json")<br>
+&gt;&gt;&gt;&nbsp;temp&nbsp;=&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit4.json",&nbsp;'r').read()<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-delete_task">delete_task</a>(2)<br>
+False<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-delete_task">delete_task</a>(1)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;file&nbsp;=&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit4.json",&nbsp;"w")<br>
+&gt;&gt;&gt;&nbsp;file.write(temp)<br>
+281<br>
+&gt;&gt;&gt;&nbsp;file.close()</tt></dd></dl>
 
 <dl><dt><a name="DataManager-for_json"><strong>for_json</strong></a> = <a href="#DataManager-__json__">__json__</a>(self)</dt></dl>
 
@@ -83,12 +117,25 @@
 :param&nbsp;offset:&nbsp;count&nbsp;of&nbsp;skipping&nbsp;tasks<br>
 :param&nbsp;limit:&nbsp;count&nbsp;of&nbsp;tasks&nbsp;in&nbsp;page<br>
 :param&nbsp;query:&nbsp;search&nbsp;parameter<br>
-:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities</tt></dd></dl>
+:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;f&nbsp;=&nbsp;a.<a href="#DataManager-get_all">get_all</a>().tasks<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"Name",&nbsp;"nothing",&nbsp;parser.parse("1999-08-28T21:03:05"),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parser.parse("1999-08-28T05:55:23"),&nbsp;True)<br>
+&gt;&gt;&gt;&nbsp;f[0]&nbsp;==&nbsp;task<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_all">get_all</a>(offset=1).tasks.__len__()<br>
+0</tt></dd></dl>
 
 <dl><dt><a name="DataManager-get_by_id"><strong>get_by_id</strong></a>(self, task_id:int)</dt><dd><tt>Get&nbsp;Task&nbsp;entity&nbsp;with&nbsp;selected&nbsp;id<br>
 &nbsp;<br>
 :param&nbsp;task_id:&nbsp;id&nbsp;of&nbsp;searched&nbsp;Task<br>
-:return:&nbsp;Task&nbsp;entity&nbsp;if&nbsp;task&nbsp;with&nbsp;selected&nbsp;id&nbsp;exists&nbsp;else&nbsp;False</tt></dd></dl>
+:return:&nbsp;Task&nbsp;entity&nbsp;if&nbsp;task&nbsp;with&nbsp;selected&nbsp;id&nbsp;exists&nbsp;else&nbsp;False<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"Name",&nbsp;"nothing",&nbsp;parser.parse("1999-08-28T21:03:05"),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parser.parse("1999-08-28T05:55:23"),&nbsp;True)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1)&nbsp;==&nbsp;task<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(-1)<br>
+False</tt></dd></dl>
 
 <dl><dt><a name="DataManager-get_with_status"><strong>get_with_status</strong></a>(self, status:model.task_status.TaskStatus, offset=0, limit=None, query=None)</dt><dd><tt>Get&nbsp;all&nbsp;filtered&nbsp;and&nbsp;paginated&nbsp;tasks&nbsp;with&nbsp;selected&nbsp;status<br>
 &nbsp;<br>
@@ -96,28 +143,68 @@
 :param&nbsp;offset:&nbsp;count&nbsp;of&nbsp;skipping&nbsp;tasks<br>
 :param&nbsp;limit:&nbsp;count&nbsp;of&nbsp;tasks&nbsp;in&nbsp;page<br>
 :param&nbsp;query:&nbsp;search&nbsp;parameter<br>
-:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities</tt></dd></dl>
+:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_with_status">get_with_status</a>(status=TaskStatus.UNCOMPLETED).tasks<br>
+[]<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_with_status">get_with_status</a>(status=TaskStatus.COMPLETED).tasks.__len__()<br>
+1</tt></dd></dl>
 
 <dl><dt><a name="DataManager-save_to_file"><strong>save_to_file</strong></a>(self, file_path:str)</dt><dd><tt>Save&nbsp;changes(tasks&nbsp;ans&nbsp;next_id)&nbsp;in&nbsp;data&nbsp;file<br>
 &nbsp;<br>
 :param&nbsp;file_path:&nbsp;set&nbsp;explicitly&nbsp;file&nbsp;path&nbsp;of&nbsp;data&nbsp;storage<br>
-:return:&nbsp;None</tt></dd></dl>
+:return:&nbsp;None<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-save_to_file">save_to_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit2.json")<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;=&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json",&nbsp;'r').read()<br>
+&gt;&gt;&gt;&nbsp;c&nbsp;=&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit2.json",&nbsp;'r').read()<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;==&nbsp;c<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-set_storage_path"><strong>set_storage_path</strong></a>(self, file_path:str)</dt><dd><tt>Set&nbsp;storage&nbsp;path&nbsp;for&nbsp;data<br>
 &nbsp;<br>
 :param&nbsp;file_path:&nbsp;file&nbsp;path&nbsp;to&nbsp;json&nbsp;file<br>
-:return:&nbsp;None</tt></dd></dl>
+:return:&nbsp;None<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;prev&nbsp;=&nbsp;a.storage_path<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-set_storage_path">set_storage_path</a>("/path")<br>
+&gt;&gt;&gt;&nbsp;a.storage_path&nbsp;==&nbsp;"/path"&nbsp;and&nbsp;a.storage_path&nbsp;!=&nbsp;prev<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-update_from_file"><strong>update_from_file</strong></a>(self, file_path:str)</dt><dd><tt>Get&nbsp;changes(&nbsp;tasks&nbsp;ans&nbsp;next_id)&nbsp;from&nbsp;data&nbsp;file<br>
 &nbsp;<br>
 :param&nbsp;file_path:&nbsp;set&nbsp;explicitly&nbsp;file&nbsp;path&nbsp;of&nbsp;data&nbsp;storage<br>
-:return:&nbsp;None</tt></dd></dl>
+:return:&nbsp;None<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-save_to_file">save_to_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit2.json")<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-change_task_status">change_task_status</a>(1,&nbsp;False)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit2.json")<br>
+&gt;&gt;&gt;&nbsp;a.tasks[0]&nbsp;!=&nbsp;b.tasks[0]<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_from_file">update_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit2.json")<br>
+&gt;&gt;&gt;&nbsp;a.tasks[0]&nbsp;==&nbsp;b.tasks[0]<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-change_task_status">change_task_status</a>(1,&nbsp;True)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-save_to_file">save_to_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")</tt></dd></dl>
 
 <dl><dt><a name="DataManager-update_task"><strong>update_task</strong></a>(self, task_id:int, new_task:model.task.Task)</dt><dd><tt>Update&nbsp;Task&nbsp;by&nbsp;id<br>
 &nbsp;<br>
 :param&nbsp;task_id:&nbsp;id&nbsp;of&nbsp;updating&nbsp;Task<br>
 :param&nbsp;new_task:&nbsp;Task&nbsp;entity&nbsp;with&nbsp;updating&nbsp;info<br>
-:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else&nbsp;False</tt></dd></dl>
+:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit3.json")<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"TEST&nbsp;val",&nbsp;"nothing",&nbsp;parser.parse("1999-08-28T21:03:05"),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parser.parse("1999-08-28T05:55:23"),&nbsp;True)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task">update_task</a>(1,&nbsp;task)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1)&nbsp;==&nbsp;task<br>
+True<br>
+&gt;&gt;&gt;&nbsp;task.name&nbsp;=&nbsp;"TEst&nbsp;N2"<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task">update_task</a>(1,&nbsp;task)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1)&nbsp;==&nbsp;task<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="DataManager-update_task_info"><strong>update_task_info</strong></a>(self, task_id:int, name:str, description:str, date_start:str, duration:int)</dt><dd><tt>Update&nbsp;Task&nbsp;info<br>
 &nbsp;<br>
@@ -126,24 +213,43 @@
 :param&nbsp;description:&nbsp;updated&nbsp;description&nbsp;of&nbsp;Task<br>
 :param&nbsp;date_start:&nbsp;updated&nbsp;start&nbsp;date&nbsp;of&nbsp;Task<br>
 :param&nbsp;duration:&nbsp;updated&nbsp;duration&nbsp;of&nbsp;Task<br>
-:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else&nbsp;False</tt></dd></dl>
+:return:&nbsp;True&nbsp;if&nbsp;entity&nbsp;was&nbsp;updated&nbsp;else&nbsp;False<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit4.json")<br>
+&gt;&gt;&gt;&nbsp;temp&nbsp;=&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task_info">update_task_info</a>(1,&nbsp;"tEsT",&nbsp;"-.-",&nbsp;"2018",&nbsp;3600)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;task&nbsp;=&nbsp;Task(1,&nbsp;"tEsT",&nbsp;"-.-",&nbsp;parser.parse("2018-06-03T00:00:00"),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parser.parse("2018-06-03T01:00:00"),&nbsp;True)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-get_by_id">get_by_id</a>(1)&nbsp;==&nbsp;task<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task">update_task</a>(1,&nbsp;temp)<br>
+True<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task">update_task</a>(144,&nbsp;temp)<br>
+False<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#DataManager-update_task_info">update_task_info</a>(-1,&nbsp;"tEsT",&nbsp;"-.-",&nbsp;"2018",&nbsp;3600)<br>
+False</tt></dd></dl>
 
 <hr>
 Class methods defined here:<br>
 <dl><dt><a name="DataManager-from_json"><strong>from_json</strong></a>(json_obj)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Creating&nbsp;<a href="#DataManager">DataManager</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;JSON&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;<br>
 :param&nbsp;json_obj:&nbsp;JSON&nbsp;<a href="builtins.html#object">object</a>&nbsp;(dict)<br>
-:return:&nbsp;instance&nbsp;of&nbsp;<a href="#DataManager">DataManager</a></tt></dd></dl>
+:return:&nbsp;instance&nbsp;of&nbsp;<a href="#DataManager">DataManager</a><br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;b&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-from_json">from_json</a>(a.<a href="#DataManager-__json__">__json__</a>())<br>
+&gt;&gt;&gt;&nbsp;b.next_id<br>
+2<br>
+&gt;&gt;&gt;&nbsp;b.tasks.__len__()<br>
+1</tt></dd></dl>
 
 <dl><dt><a name="DataManager-load_from_file"><strong>load_from_file</strong></a>(file_path:str)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;<a href="#DataManager">DataManager</a>&nbsp;instance&nbsp;from&nbsp;file&nbsp;with&nbsp;JSON&nbsp;data<br>
 &nbsp;<br>
 :param&nbsp;file_path:&nbsp;set&nbsp;explicitly&nbsp;file&nbsp;path&nbsp;of&nbsp;data&nbsp;storage<br>
-:return:instance&nbsp;of&nbsp;<a href="#DataManager">DataManager</a></tt></dd></dl>
-
-<dl><dt><a name="DataManager-tasks_from_json"><strong>tasks_from_json</strong></a>(storage_obj)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Deserialize&nbsp;Tasks&nbsp;from&nbsp;JSON&nbsp;<a href="builtins.html#object">object</a><br>
-&nbsp;<br>
-:param&nbsp;storage_obj:&nbsp;JSON&nbsp;serialized&nbsp;Tasks<br>
-:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities</tt></dd></dl>
+:return:&nbsp;instance&nbsp;of&nbsp;<a href="#DataManager">DataManager</a><br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;a.next_id<br>
+2<br>
+&gt;&gt;&gt;&nbsp;a.tasks.__len__()<br>
+1</tt></dd></dl>
 
 <hr>
 Static methods defined here:<br>
@@ -154,20 +260,69 @@ Static methods defined here:<br>
 :param&nbsp;limit:&nbsp;count&nbsp;of&nbsp;Tasks&nbsp;in&nbsp;page<br>
 :param&nbsp;query:&nbsp;searched&nbsp;parameter<br>
 :param&nbsp;status_filter:&nbsp;searched&nbsp;Task&nbsp;status<br>
-:return:&nbsp;paginated&nbsp;list&nbsp;of&nbsp;Tasks&nbsp;that&nbsp;consist&nbsp;searched&nbsp;parameter</tt></dd></dl>
+:return:&nbsp;paginated&nbsp;list&nbsp;of&nbsp;Tasks&nbsp;that&nbsp;consist&nbsp;searched&nbsp;parameter<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_and_search__">__paginate_and_search__</a>(a.tasks).tasks.__len__()<br>
+1<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_and_search__">__paginate_and_search__</a>(a.tasks,&nbsp;offset=3).tasks.__len__()<br>
+0<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_and_search__">__paginate_and_search__</a>(a.tasks,&nbsp;query="nothing").tasks.__len__()<br>
+1</tt></dd></dl>
 
 <dl><dt><a name="DataManager-__paginate_array__"><strong>__paginate_array__</strong></a>(array, offset=0, limit=None)</dt><dd><tt>Paginate&nbsp;list&nbsp;of&nbsp;Tasks<br>
 &nbsp;<br>
 :param&nbsp;array:&nbsp;list&nbsp;of&nbsp;Tasks<br>
 :param&nbsp;offset:&nbsp;count&nbsp;of&nbsp;skipping&nbsp;tasks<br>
 :param&nbsp;limit:&nbsp;count&nbsp;of&nbsp;Tasks&nbsp;in&nbsp;page<br>
-:return:&nbsp;paginated&nbsp;list&nbsp;of&nbsp;Tasks</tt></dd></dl>
+:return:&nbsp;paginated&nbsp;list&nbsp;of&nbsp;Tasks<br>
+&gt;&gt;&gt;&nbsp;print(<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_array__">__paginate_array__</a>([1,2,3,4,5]))<br>
+[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5]<br>
+&gt;&gt;&gt;&nbsp;print(<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_array__">__paginate_array__</a>([1,2,3,4,5],&nbsp;offset=2))<br>
+[3,&nbsp;4,&nbsp;5]<br>
+&gt;&gt;&gt;&nbsp;print(<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_array__">__paginate_array__</a>([1,2,3,4,5],&nbsp;offset=1,&nbsp;limit=3))<br>
+[2,&nbsp;3,&nbsp;4]<br>
+&gt;&gt;&gt;&nbsp;print(<a href="#DataManager">DataManager</a>.<a href="#DataManager-__paginate_array__">__paginate_array__</a>([1,2,3,4,5],&nbsp;offset=-5,&nbsp;limit=0))<br>
+[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5]</tt></dd></dl>
 
 <dl><dt><a name="DataManager-__search_filter__"><strong>__search_filter__</strong></a>(array:[&lt;class 'model.task.Task'&gt;], query=None)</dt><dd><tt>Search&nbsp;Tasks&nbsp;in&nbsp;list<br>
 &nbsp;<br>
 :param&nbsp;array:&nbsp;list&nbsp;of&nbsp;Tasks<br>
 :param&nbsp;query:&nbsp;searched&nbsp;parameter<br>
-:return:&nbsp;list&nbsp;of&nbsp;Tasks&nbsp;that&nbsp;consist&nbsp;searched&nbsp;parameter</tt></dd></dl>
+:return:&nbsp;list&nbsp;of&nbsp;Tasks&nbsp;that&nbsp;consist&nbsp;searched&nbsp;parameter<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-load_from_file">load_from_file</a>(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json")<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__search_filter__">__search_filter__</a>(a.tasks).__len__()<br>
+1<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__search_filter__">__search_filter__</a>(a.tasks,&nbsp;query="Just").__len__()<br>
+0<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__search_filter__">__search_filter__</a>(a.tasks,&nbsp;query="Name").__len__()<br>
+1<br>
+&gt;&gt;&gt;&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-__search_filter__">__search_filter__</a>(a.tasks,&nbsp;query="nam").__len__()<br>
+1</tt></dd></dl>
+
+<dl><dt><a name="DataManager-tasks_from_json"><strong>tasks_from_json</strong></a>(storage_obj)</dt><dd><tt>Deserialize&nbsp;Tasks&nbsp;from&nbsp;JSON&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+:param&nbsp;storage_obj:&nbsp;JSON&nbsp;serialized&nbsp;Tasks<br>
+:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities<br>
+&gt;&gt;&gt;&nbsp;data_str&nbsp;=&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_suit1.json",&nbsp;'r').read()<br>
+&gt;&gt;&gt;&nbsp;storage_obj&nbsp;=&nbsp;simplejson.loads(data_str)['tasks']<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-tasks_from_json">tasks_from_json</a>(storage_obj)[0].<a href="#DataManager-__json__">__json__</a>()<br>
+&gt;&gt;&gt;&nbsp;a['name']<br>
+'Name'<br>
+&gt;&gt;&gt;&nbsp;a['date_start']<br>
+'1999-08-28T21:03:05'</tt></dd></dl>
+
+<dl><dt><a name="DataManager-tasks_to_json"><strong>tasks_to_json</strong></a>(tasks)</dt><dd><tt>Deserialize&nbsp;Tasks&nbsp;from&nbsp;JSON&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+:param&nbsp;tasks:&nbsp;JSON&nbsp;serialized&nbsp;Tasks<br>
+:return:&nbsp;list&nbsp;of&nbsp;Task&nbsp;entities<br>
+&gt;&gt;&gt;&nbsp;arr&nbsp;=&nbsp;[Task(1,&nbsp;"Name",&nbsp;"nothing",&nbsp;parser.parse("1999-08-28T21:03:05"),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parser.parse("1999-08-28T05:55:23"),&nbsp;True)]<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#DataManager">DataManager</a>.<a href="#DataManager-tasks_to_json">tasks_to_json</a>(arr)[0]<br>
+&gt;&gt;&gt;&nbsp;a['name']<br>
+'Name'<br>
+&gt;&gt;&gt;&nbsp;a['date_start']<br>
+'1999-08-28T21:03:05'<br>
+&gt;&gt;&gt;&nbsp;a['id']<br>
+1</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -184,5 +339,6 @@ Data descriptors defined here:<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>storage_path</strong> = '/home/a_krava/projects/github/task-scheduler/data/tasks.json'</td></tr></table>
+<td width="100%"><strong>storage_path</strong> = '/home/a_krava/projects/github/task-scheduler/data/tasks.json'<br>
+<strong>test_suits_folder_path</strong> = '/home/a_krava/projects/github/task-scheduler/tests'</td></tr></table>
 </body></html>

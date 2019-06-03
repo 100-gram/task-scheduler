@@ -1,6 +1,6 @@
 from os import path, system, name
 from sys import modules
-from flask import request, Response
+from flask import Response
 from flask_restful import reqparse
 import simplejson
 import logging
@@ -32,18 +32,6 @@ def clear():
         system('cls')
     else:
         system('clear')
-
-
-def shutdown_server():
-    """
-    Shutdown flask server
-
-    :return: None
-    """
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
 
 
 def disable_log(app):

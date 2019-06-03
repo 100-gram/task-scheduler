@@ -44,7 +44,10 @@
 
 <dl><dt><a name="Response-__json__"><strong>__json__</strong></a>(self)</dt><dd><tt>JSON&nbsp;serialization&nbsp;for&nbsp;DataManager&nbsp;<a href="builtins.html#object">object</a><br>
 &nbsp;<br>
-:return:&nbsp;dict&nbsp;with&nbsp;all&nbsp;inner&nbsp;fields</tt></dd></dl>
+:return:&nbsp;dict&nbsp;with&nbsp;all&nbsp;inner&nbsp;fields<br>
+&gt;&gt;&gt;&nbsp;a&nbsp;=&nbsp;<a href="#Response">Response</a>([],&nbsp;5,&nbsp;5,&nbsp;"something",&nbsp;20,&nbsp;True)<br>
+&gt;&gt;&gt;&nbsp;a.<a href="#Response-__json__">__json__</a>().<a href="#Response-__str__">__str__</a>()&nbsp;==&nbsp;open(test_suits_folder_path&nbsp;+&nbsp;"/test_response.txt",&nbsp;'r').read()<br>
+True</tt></dd></dl>
 
 <dl><dt><a name="Response-for_json"><strong>for_json</strong></a> = <a href="#Response-__json__">__json__</a>(self)</dt></dl>
 
@@ -56,5 +59,12 @@ Data descriptors defined here:<br>
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
 </dl>
-</td></tr></table></td></tr></table>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>test_suits_folder_path</strong> = '/home/a_krava/projects/github/task-scheduler/tests'</td></tr></table>
 </body></html>

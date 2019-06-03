@@ -1,4 +1,3 @@
-import sys
 import math
 from controller.datamanager import DataManager
 from enum import Enum
@@ -28,10 +27,12 @@ class ConsoleInterface:
             print("Main menu:\n1.All tasks\n2.Not completed tasks\n3.Completed tasks\n4.New task\n5.Exit")
             if input_is_correct is False:
                 print("Your input was not correct, try again")
+            elif input_is_correct is None:
+                return
             answer = input('Enter your variant: ')
             input_is_correct = self.__main_menu_redirect(answer)
 
-    def __main_menu_redirect(self, value) -> bool:
+    def __main_menu_redirect(self, value):
         if value == '1':
             self.__tasks_menu(TaskMenuType.ALL)
         elif value == '2':
@@ -41,7 +42,7 @@ class ConsoleInterface:
         elif value == '4':
             self.__change_or_add_task()
         elif value == '5':
-            self.__exit()
+            return None
         else:
             return False
         return True
@@ -80,12 +81,14 @@ class ConsoleInterface:
         if len(tasks) == 0:
             print("No tasks that match your query")
         else:
-            print("  # | id  | Name               | Date start          | Date end            | Done")
-            print("-----------------------------------------------------------------------------------")
+            current_offset = (page - 1) * TASKS_ON_PAGE
+            print("  # | id  | Name             | Date start          | Date end            | Done")
+            print("--------------------------------------------------------------------------------")
             for i, task in enumerate(tasks):
                 color = ConsoleInterface.__choose_color(task)
-                print(colored("#%2d | %3d | %-18.18s | %s | %s | %s" %
-                              (i, task.task_id, task.name, task.date_start, task.date_end, task.is_completed), color))
+                print(colored("#%2d | %3d | %-16.16s | %s | %s | %s" %
+                              (current_offset + 1 + i, task.task_id, task.name, task.date_start, task.date_end,
+                               task.is_completed), color))
             print("Page %d of %d" % (page, all_pages))
 
     @staticmethod
@@ -206,7 +209,3 @@ class ConsoleInterface:
             return True
         except ValueError:
             return False
-
-    @staticmethod
-    def __exit():
-        sys.exit()
