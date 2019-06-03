@@ -102,7 +102,7 @@ class ConsoleInterface:
         else:
             return self.data_manager.get_with_status(TaskStatus.COMPLETED, offset, TASKS_ON_PAGE, search_query)
 
-    def __tasks_menu_redirect(self, value: int, menu_type, all_pages, search_query=None) -> bool:
+    def __tasks_menu_redirect(self, value: str, menu_type, all_pages, search_query=None) -> bool:
         if value == '1':
             self.__tasks_menu_change_page(search_query, menu_type, all_pages)
         elif value == '2':
@@ -153,7 +153,7 @@ class ConsoleInterface:
             if not input_is_correct:
                 print("Your input was not correct, try again")
 
-    def __task_menu_redirect(self, value: int, task) -> bool:
+    def __task_menu_redirect(self, value: str, task) -> bool:
         if value == '1':
             self.__change_or_add_task(task)
         elif value == '2':
@@ -202,7 +202,7 @@ class ConsoleInterface:
             else:
                 self.data_manager.create_task(name, description, date, seconds_duration)
             return True
-        except Exception as e:
+        except ValueError:
             return False
 
     @staticmethod

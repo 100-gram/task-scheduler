@@ -55,7 +55,7 @@ def test_patch_task(create_task):
     assert r.status_code == 200
     task = json.loads(r.content, object_hook=lambda d: namedtuple('X', d.keys())(*d.values())).task
     task_is_completed = task.is_completed
-    assert task_is_completed == True
+    assert task_is_completed is True
 
 
 def test_unsuccessful_patch_task(create_task):
