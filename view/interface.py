@@ -80,10 +80,12 @@ class ConsoleInterface:
         if len(tasks) == 0:
             print("No tasks that match your query")
         else:
-            for task in tasks:
+            print("  # | id  | Name               | Date start          | Date end            | Done")
+            print("-----------------------------------------------------------------------------------")
+            for i, task in enumerate(tasks):
                 color = ConsoleInterface.__choose_color(task)
-                print(colored("%d. %s | %s | %s | %s" %
-                              (task.task_id, task.name, task.date_start, task.date_end, task.is_completed), color))
+                print(colored("#%2d | %3d | %-18.18s | %s | %s | %s" %
+                              (i, task.task_id, task.name, task.date_start, task.date_end, task.is_completed), color))
             print("Page %d of %d" % (page, all_pages))
 
     @staticmethod
