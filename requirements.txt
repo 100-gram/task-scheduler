@@ -14,7 +14,7 @@ Jinja2==2.10.1
 lazy-object-proxy==1.4.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
-pipenv==2018.11.26
+pipenv==2022.1.8
 pipreqs==0.4.9
 prompt-toolkit==2.0.9
 pylint==2.3.1
